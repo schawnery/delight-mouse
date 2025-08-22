@@ -1,0 +1,95 @@
+import React, { useState } from 'react';
+import { FaLightbulb, FaClock, FaRedo } from 'react-icons/fa';
+import Prompt from '../components/Prompt';
+import '../styles/Home.css';
+
+const Home = () => {
+  const [activeTab, setActiveTab] = useState(1);
+  const [historyCards, setHistoryCards] = useState([]);
+  const [currentPrompt, setCurrentPrompt] = useState('');
+
+  const prompts = [
+    'Take a 5-minute walk.',
+    'Drink a glass of water.',
+    'Write down three things you are grateful for.',
+    'Do 10 push-ups.',
+    'Read a page from a book.'
+  ];
+
+  const handleGenerateChallenge = () => {
+    const randomPrompt = prompts[Math.floor(Math.random() * prompts.length)];
+    setCurrentPrompt(randomPrompt);
+    const timestamp = new Date().toLocaleString();
+    setHistoryCards([{ prompt: randomPrompt, timestamp }, ...historyCards]);
+  };
+
+  const handleClearHistory = () => {
+    setHistoryCards([]);
+  };
+
+  return (
+    <div className="home-container">
+      <header>
+        <h1>Daily Challenge Generator</h1>
+        <p>Discover new habits and learning opportunities to improve your daily routine</p>
+      </header>
+      <div className="tabs-container">
+        <div className="tabs-wrapper">
+          <div className="tabs">
+            <button 
+              className={`tab-button ${activeTab === 1 ? 'active' : ''}`}
+              onClick={() => setActiveTab(1)}
+            >
+              <FaLightbulb className="icon-position" /> Current challenge
+            </button>
+            <button 
+              className={`tab-button ${activeTab === 2 ? 'active' : ''}`}
+              onClick={() => setActiveTab(2)}
+            >
+              <FaClock className="icon-position" /> History ({historyCards.length})
+            </button>
+          </div>
+        </div>
+      </div>
+      <main className="main-window">
+        {activeTab === 1 && (
+          <div className="challenge-content">
+            <div className="main-window-header">
+              <h2>Your challenge</h2>
+              <p>Generate your daily challenge!</p>
+            </div>
+            {currentPrompt ? (
+              <Prompt text={currentPrompt} />
+            ) : (
+              <div className="prompt-text zero-state"></div>
+            )}
+            <button className="generate-button" onClick={handleGenerateChallenge}>
+              <FaRedo className="icon-position" /> Generate Challenge
+            </button>
+          </div>
+        )}
+        {activeTab === 2 && (
+          <div className="history-content">
+            <div className="main-window-header">
+              <div>
+                <h2>Challenge history</h2>
+                <p>You've completed ({historyCards.length}) challenges!</p>
+              </div>
+              <button className="clear-history-button" onClick={handleClearHistory}>Clear History</button>
+            </div>
+            <div className="cards-wrapper">
+              {historyCards.map((card, index) => (
+                <div key={index} className="card">
+                  <p>{card.prompt}</p>
+                  <span className="card-timestamp">{card.timestamp}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </main>
+    </div>
+  );
+};
+
+export default Home;

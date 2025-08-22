@@ -1,0 +1,250 @@
+/* Home.css */
+
+.home-container {
+  text-align: center;
+  padding: 20px;
+  min-width: 500px;
+  margin: 0 auto; /* Center the container horizontally */
+}
+
+header {
+  margin-bottom: 20px;
+}
+
+h1 {
+  font-size: 1.8rem; /* Adjusted h1 title size */
+  color: #333;
+}
+
+h2 {
+  margin: 0; /* Remove margins from h2 elements */
+}
+
+p {
+  margin: 0;
+  padding: 0;
+  line-height: 1.125; /* Added line height to p tags */
+}
+
+.tabs-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.tabs-wrapper {
+  width: 100%;
+  background-color: #ffffff; /* Slight grey background */
+  padding: 12px 8px; /* Updated padding: top/bottom 8px, left/right 16px */
+  border-radius: 9999px;
+}
+
+.tabs {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.tab-button {
+  flex: 1; /* Ensure both buttons take up equal space */
+  margin: 0 5px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  border-radius: 999px;
+  background-color: #f9f9f9;
+}
+
+.tab-button.active {
+  background-color: #000000;
+  color: white;
+  border-color: #141414;
+}
+
+.tab-button:hover {
+  background-color: #e0e0e0;
+  color:#333;
+}
+
+.main-window {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 20px;
+  background-color: #fff;
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 350px;
+  overflow: hidden; /* Allow overflow content to be hidden within the main window */
+}
+
+/* Cap the height of the main container */
+.main-container {
+  max-height: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+
+.challenge-content {
+  text-align: center;
+  width: 100%;
+  display: flex;
+  flex-direction: column; 
+  flex-grow: 1; /* Allow the content to expand and fill the available space */
+}
+
+.challenge-content h2 {
+  font-size: 1.125rem;
+  color: #333;
+}
+
+.challenge-content label {
+  display: block;
+  font-size: 1.2rem;
+  color: #666;
+}
+
+.generate-button {
+  display: block; /* Ensure the button behaves like a block element */
+  width: 100%; /* Make the button span the entire width of its parent */
+  padding: 10px 20px;
+  font-size: 1rem;
+  color: white;
+  background-color: #000000;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  align-self: center;
+  margin-bottom: 0; /* Remove bottom margin from generate button */
+}
+
+.generate-button:hover {
+  background-color: #0056b3;
+}
+
+.history-content {
+  text-align: center;
+  width: 100%;
+  overflow: hidden;
+}
+
+.history-content:hover {
+  overflow: hidden;
+}
+
+.history-content::-webkit-scrollbar {
+  display: none; /* Hide scrollbar for Webkit browsers */
+}
+
+.card {
+  border-radius: 5px;
+  background-color: #eeeeee;
+  padding: 20px 0px 20px 0px; /* Tighter vertical padding */
+}
+
+.card-timestamp {
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.main-window-header {
+  display: flex;
+  flex-direction: row; /* Arrange items in a row */
+  justify-content: space-between; /* Distribute space between elements */
+  align-items: center; /* Vertically align items */
+  margin-bottom: 20px;
+  position: sticky;
+  top: 0;
+  z-index: 10; /* Ensure it stays above other content */
+  background-color: #fff; /* Match the background to avoid overlap issues */
+}
+
+.main-window-header h2 {
+  font-size: 1.125rem;
+  color: #333;
+  text-align: left;
+}
+
+.main-window-header p {
+  font-size: 1rem;
+  color: #666;
+  margin-top: 5px; /* Add spacing between the title and description */
+}
+
+.clear-history-button {
+  padding: 8px 16px;
+  font-size: 1rem;
+  color: rgb(0, 0, 0);
+  background-color: #ffffff;
+  border: 1px solid #666;
+  border-radius: 5px;
+  cursor: pointer;
+  position: relative;
+}
+
+.clear-history-button:hover {
+  background-color: #e54051;
+  color: white;
+}
+
+.prompt-text {
+  font-size: 1rem; /* Make the font size smaller */
+  color: #444;
+  font-style: italic;
+  flex-grow: 1; /* Allow the prompt text to fill the remaining space */
+  display: flex;
+  align-items: center; /* Center the text vertically */
+  justify-content: center; /* Center the text horizontally */
+  padding: 10px; /* Add some padding for better alignment */
+}
+
+.prompt-text.zero-state::before {
+  content: "Click the button below to generate your daily challenge";
+  color: #888; /* Lighter color for zero state */
+}
+
+/* Add a wrapper for all cards */
+.cards-wrapper {
+    width: 100%;
+  display: flex;
+  flex-direction: column;   
+  overflow: hidden;
+  gap:1rem;
+}
+
+/* Add scrollbar to cards-wrapper when cards exceed 3 */
+.cards-wrapper {
+  max-height: calc(2 * 120px); /* Assuming each card is approximately 120px tall */
+  overflow-y: auto;
+}
+
+/* Add gap between cards and scrollbar thumb */
+.cards-wrapper {
+  padding-right: 1px; /* Add padding to create space between cards and scrollbar */
+}
+
+.cards-wrapper::-webkit-scrollbar {
+  width: 4px; /* For Webkit browsers */
+}
+
+.cards-wrapper::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 4px;
+}
+
+
+/* Style for icon positioning */
+.icon-position {
+  margin-right: 8px;
+  position: relative;
+  top: 2px; /* Move the icon down slightly */
+}
+
+
