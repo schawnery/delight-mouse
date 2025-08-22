@@ -18,12 +18,14 @@ h1 {
 
 h2 {
   margin: 0; /* Remove margins from h2 elements */
+  color: #333;
 }
 
 p {
   margin: 0;
   padding: 0;
   line-height: 1.125; /* Added line height to p tags */
+  color: #333;
 }
 
 .tabs-container {
@@ -55,6 +57,7 @@ p {
   border: 1px solid #ccc;
   border-radius: 999px;
   background-color: #f9f9f9;
+  color: #333;
 }
 
 .tab-button.active {
