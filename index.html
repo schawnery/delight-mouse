@@ -8,6 +8,10 @@
   </head>
   <body>
     <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
+    <!-- Use a relative path for the entry script so that GitHub Pages
+         can resolve the file correctly when the site is served from a
+         subdirectory. The build process will replace this path with the
+         optimized bundle. -->
+    <script type="module" src="./src/main.jsx"></script>
   </body>
 </html>
