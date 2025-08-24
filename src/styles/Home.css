@@ -3,7 +3,7 @@
 .home-container {
   text-align: center;
   padding: 20px;
-  min-width: 500px;
+  max-width: 500px;
   margin: 0 auto; /* Center the container horizontally */
 }
 
@@ -37,7 +37,7 @@ p {
 
 .tabs-wrapper {
   width: 100%;
-  background-color: #ffffff; /* Slight grey background */
+  background-color: #ffffff; /* pure white */
   padding: 12px 8px; /* Updated padding: top/bottom 8px, left/right 16px */
   border-radius: 9999px;
 }
