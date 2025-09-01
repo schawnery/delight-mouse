@@ -3,7 +3,7 @@
 .home-container {
   text-align: center;
   padding: 20px;
-  min-width: 500px;
+  width: 500px;
   margin: 0 auto; /* Center the container horizontally */
 }
 
@@ -146,11 +146,6 @@ p {
   display: none; /* Hide scrollbar for Webkit browsers */
 }
 
-.card {
-  border-radius: 5px;
-  background-color: #eeeeee;
-  padding: 20px 0px 20px 0px; /* Tighter vertical padding */
-}
 
 .card-timestamp {
   font-size: 0.8rem;

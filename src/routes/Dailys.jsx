@@ -3,25 +3,28 @@ import { useNavigate } from 'react-router-dom';
 import { FaLightbulb, FaClock, FaRedo } from 'react-icons/fa';
 import Prompt from '../components/Prompt';
 import Card from '../components/Card/Card';
+import TextBox from '../components/TextBox/TextBox';
 import '../styles/Home.css';
 
-const Home = () => {
+const Dailys = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState(1);
+  // Unified history for both generated prompts and textbox cards
   const [historyCards, setHistoryCards] = useState(() => {
-    const stored = localStorage.getItem('historyCards');
+    const stored = localStorage.getItem('dailys_historyCards');
     return stored ? JSON.parse(stored) : [];
   });
   const [currentPrompt, setCurrentPrompt] = useState(() => {
-    return localStorage.getItem('currentPrompt') || '';
+    return localStorage.getItem('dailys_currentPrompt') || '';
   });
+  const [textBoxValue, setTextBoxValue] = useState("");
   // Persist historyCards and currentPrompt to localStorage
   useEffect(() => {
-    localStorage.setItem('historyCards', JSON.stringify(historyCards));
+    localStorage.setItem('dailys_historyCards', JSON.stringify(historyCards));
   }, [historyCards]);
 
   useEffect(() => {
-    localStorage.setItem('currentPrompt', currentPrompt);
+    localStorage.setItem('dailys_currentPrompt', currentPrompt);
   }, [currentPrompt]);
 
   const prompts = [
@@ -36,7 +39,7 @@ const Home = () => {
     const randomPrompt = prompts[Math.floor(Math.random() * prompts.length)];
     setCurrentPrompt(randomPrompt);
     const timestamp = new Date().toLocaleString();
-    setHistoryCards([{ prompt: randomPrompt, timestamp }, ...historyCards]);
+  setHistoryCards([{ prompt: randomPrompt, timestamp, type: 'generated' }, ...historyCards]);
   };
 
   const handleClearHistory = () => {
@@ -46,8 +49,8 @@ const Home = () => {
   return (
     <div className="home-container">
       <header>
-        <h1>Daily Challenge Generator</h1>
-        <p>Discover new habits and learning opportunities to improve your daily routine</p>
+        <h1>Dailys Todo</h1>
+        <p>Add more mundane shit to your shitlist</p>
       </header>
       <div className="tabs-container">
         <div className="tabs-wrapper">
@@ -74,38 +77,49 @@ const Home = () => {
               <h2>Your challenge</h2>
               <p>Generate your daily challenge!</p>
             </div>
-            {currentPrompt ? (
-              <Prompt text={currentPrompt} />
-            ) : (
-              <div className="prompt-text zero-state"></div>
-            )}
-            <button className="generate-button" onClick={handleGenerateChallenge}>
-              <FaRedo className="icon-position" /> Generate Challenge
+            <Prompt prompt={currentPrompt} />
+            <div style={{ marginTop: '2em', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              <TextBox
+                value={textBoxValue}
+                onChange={e => setTextBoxValue(e.target.value)}
+                onKeyDown={e => {
+                  if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    if (textBoxValue.trim()) {
+                      const timestamp = new Date().toLocaleString();
+                      setHistoryCards([{ prompt: textBoxValue.trim(), timestamp, type: 'textbox' }, ...historyCards]);
+                      setTextBoxValue("");
+                    }
+                  }
+                }}
+                placeholder="Write your thoughts here... (press Enter to submit)"
+                rows={4}
+              />
+            </div>
+            <button className="generate-btn" onClick={handleGenerateChallenge}>
+              <FaRedo className="icon-position" /> Generate
             </button>
           </div>
         )}
         {activeTab === 2 && (
           <div className="history-content">
             <div className="main-window-header">
-              <div>
-                <h2>Challenge history</h2>
-                <p>You've completed ({historyCards.length}) challenges!</p>
-              </div>
-              <button className="clear-history-button" onClick={handleClearHistory}>Clear History</button>
+              <h2>History</h2>
+              <button className="clear-btn" onClick={handleClearHistory}>Clear</button>
             </div>
-            <div className="cards-wrapper">
-              {historyCards.map((card, index) => (
-                <Card key={index}>
-                  <p>{card.prompt}</p>
-                  <span className="card-timestamp">{card.timestamp}</span>
-                </Card>
+              {historyCards.map((card, idx) => (
+                <li key={idx} className="history-card">
+                  <Card>
+                    <span>{card.prompt}</span>
+                    <span className="timestamp">{card.timestamp}</span>
+                  </Card>
+                </li>
               ))}
-            </div>
           </div>
         )}
       </main>
     </div>
   );
-};
+}
 
-export default Home;
+export default Dailys;

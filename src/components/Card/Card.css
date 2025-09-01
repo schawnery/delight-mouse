@@ -1,0 +1,10 @@
+/* Card.css */
+.card {
+  border-radius: 10px;
+  background-color: #fff;
+  padding: 20px;
+  border: 1px solid #ddd;
+  color: #333;
+  margin-bottom: 1em;
+  box-shadow: none;
+}

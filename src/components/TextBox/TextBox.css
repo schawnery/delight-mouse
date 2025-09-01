@@ -1,0 +1,19 @@
+.text-box {
+  width: 100%;
+  min-height: 2.5em;
+  padding: 0.75em 1em;
+  font-size: 1rem;
+  font-family: inherit;
+  border: 1px solid var(--color-grey-30, #C8C9CF);
+  border-radius: 0.5em;
+  background: var(--color-grey-0, #fff);
+  color: var(--color-grey-100, #1B1C22);
+  resize: vertical;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+}
+.text-box:focus {
+  outline: none;
+  border-color: var(--color-blue-40, #2D9CFF);
+  background: var(--color-grey-5, #F7F7F8);
+}
