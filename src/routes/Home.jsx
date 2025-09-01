@@ -29,7 +29,11 @@ const Home = () => {
     'Drink a glass of water.',
     'Write down three things you are grateful for.',
     'Do 10 push-ups.',
-    'Read a page from a book.'
+    'Read a page from a book.',
+    'Do 20 squats.',
+    'Stand up and reset your posture.',
+    'Step away from screens for 5 minutes',
+    'Write down your top priority for the next two days.'
   ];
 
   const handleGenerateChallenge = () => {
