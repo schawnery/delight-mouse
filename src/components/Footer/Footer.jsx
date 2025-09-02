@@ -1,5 +1,5 @@
 import React from 'react';
-import '../styles/Footer.css';
+import './Footer.css';
 
 const Footer = () => {
   // Set your major, minor, and atom versions here

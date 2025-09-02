@@ -6,11 +6,12 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+  "build": "vite build",
+  "postbuild": "copy dist/index.html dist/404.html",
     "lint": "eslint .",
     "preview": "vite preview",
-    "predeploy": "npm run build",
-    "deploy": "vite build && gh-pages -d dist"
+  "predeploy": "npm run build && npm run postbuild",
+  "deploy": "npm run build && npm run postbuild && gh-pages -d dist"
   },
   "dependencies": {
     "react": "^19.1.1",

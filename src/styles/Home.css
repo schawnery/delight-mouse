@@ -81,7 +81,7 @@ p {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 350px;
+  height: 500px;
   overflow: hidden; /* Allow overflow content to be hidden within the main window */
 }
 
