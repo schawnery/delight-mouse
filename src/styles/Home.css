@@ -8,6 +8,16 @@
   margin-top: 64px; /* Offset for fixed navbar */
 }
 
+@media (max-width: 600px) {
+  .home-container {
+    width: 100vw;
+    max-width: 100vw;
+    padding: 12px;
+    box-sizing: border-box;
+    margin-top: 56px;
+  }
+}
+
 header {
   margin-bottom: 20px;
 }
@@ -39,6 +49,7 @@ p {
 .tabs-wrapper {
   width: 100%;
   background-color: #ffffff; /* pure white */
+  border: 1px solid #ddd;
   padding: 12px 8px; /* Updated padding: top/bottom 8px, left/right 16px */
   border-radius: 9999px;
 }
