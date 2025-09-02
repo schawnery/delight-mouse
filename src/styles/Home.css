@@ -5,6 +5,7 @@
   padding: 20px;
   width: 500px;
   margin: 0 auto; /* Center the container horizontally */
+  margin-top: 64px; /* Offset for fixed navbar */
 }
 
 header {

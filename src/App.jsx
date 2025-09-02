@@ -16,8 +16,6 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/home" element={<Home />} />
         <Route path="/dailys" element={<Dailys />} />
-        <Route path="/delight-mouse" element={<Navigate to="/home" replace />} />
-        <Route path="/delight-mouse/home" element={<Navigate to="/home" replace />} />
       </Routes>
       <Footer />
     </>

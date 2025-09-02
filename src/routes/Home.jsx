@@ -51,7 +51,7 @@ const Home = () => {
     <div className="home-container">
       <header>
         <h1>Daily Challenge Generator</h1>
-        <p>Discover new habits and learning opportunities to improve your daily routine</p>
+        <p>Hit the button to add stuff to your daily routine</p>
       </header>
       <div className="tabs-container">
         <div className="tabs-wrapper">
