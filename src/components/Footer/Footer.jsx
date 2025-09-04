@@ -5,7 +5,7 @@ const Footer = () => {
   // Set your major, minor, and atom versions here
   const MAJOR = 1;
   const MINOR = 2;
-  const ATOM = 0;
+  const ATOM = 1;
   const now = new Date();
   const DD = String(now.getDate()).padStart(2, '0');
   const MM = String(now.getMonth() + 1).padStart(2, '0');
