@@ -1,4 +1,3 @@
-
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./Navbar.css";
@@ -8,8 +7,8 @@ export default function Navbar({ children }) {
   return (
     <nav className="navbar">
       <div className="navbar-content">
-        <button className="navbar-btn" onClick={() => navigate("/home")}>Home</button>
         <button className="navbar-btn" onClick={() => navigate("/dailys")}>Dailys</button>
+        <button className="navbar-btn" onClick={() => navigate("/home")}>Home</button>
         {children}
       </div>
     </nav>
