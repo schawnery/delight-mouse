@@ -344,7 +344,7 @@ const Dailys = () => {
         <div className="challenge-content">
           <div className="main-window-header">
             <h2>{title}</h2>
-            <p>{description}</p>
+            <span className="kanban-count-pill">{cards.length}</span>
           </div>
           <div className={columnKey === 'historyCards' ? 'cards-wrapper' : 'right-cards-wrapper'}>
             {cards.map((card, index) => (
@@ -369,7 +369,8 @@ const Dailys = () => {
           display: 'flex', 
           flexDirection: 'row',
           maxWidth: 'calc(100vw - 4rem)', 
-          margin: '0' 
+          margin: '0', 
+          gap: '1rem'
         }}>
           {/* Challenge Generation Column */}
           <main className="kanban-column">

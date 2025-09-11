@@ -4,7 +4,7 @@
   top: 0;
   position: fixed;
   z-index: 1000;
-  background: var(--color-grey-5, #f7f7f8);
+  background: var(--color-grey-5, #fcfcfc);
   border-bottom: 1px solid var(--color-grey-20, #e0e1e5);
   padding: 0.5em 3.5rem;
   display: flex;

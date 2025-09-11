@@ -198,12 +198,36 @@ p {
   text-align: left;
 }
 
-.main-window-header p {
-  font-size: 1rem;
-  color: #666;
-  margin-top: 5px; /* Add spacing between the title and description */
+/* Kanban column header styling inspired by reference image */
+.main-window-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  background: #f5f6fa;
+  border-radius: 12px 12px 0 0;
+  padding: 1rem 1.5rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
 }
 
+.main-window-header h2 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 0;
+  color: #222;
+}
+
+.main-window-header .kanban-count-pill {
+  background: #ffe066;
+  color: #222;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-radius: 999px;
+  padding: 0.25em 0.9em;
+  margin-left: 1em;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
 .clear-history-button {
   padding: 8px 16px;
   font-size: 1rem;
@@ -274,12 +298,7 @@ p {
 }
 
 .kanban-column {
-  flex: 1; /* Allow the column to expand and fill available space */
-  margin: 0 0.5rem;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  padding: 20px;
-  background-color: #f9f9f9;
+  flex: 1;
   align-items: flex-start;
   display: flex;
   flex-direction: column;
@@ -291,6 +310,10 @@ p {
   display: flex;
   flex-direction: column;
   overflow-y: auto;
+  /* Removed padding, background color, and border for a cleaner look */
+  padding: 0;
+  background-color: transparent;
+  border: none;
 }
 
 .board {
