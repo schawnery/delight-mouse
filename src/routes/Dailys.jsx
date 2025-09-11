@@ -5,6 +5,7 @@ import { useDrag, useDrop, DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import Card from '../components/Card/Card';
 import TextBox from '../components/TextBox/TextBox';
+import EditableCard from '../components/Card/EditableCard';
 import '../styles/Home.css';
 
 // Constants
@@ -47,6 +48,9 @@ const Dailys = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState(1);
   const [textBoxValue, setTextBoxValue] = useState("");
+  const [cardTitle, setCardTitle] = useState("");
+  const [cardDescription, setCardDescription] = useState("");
+  const [cardTag, setCardTag] = useState("");
   
   // Initialize state from localStorage
   const [historyCards, setHistoryCards] = useState(() => 
@@ -262,6 +266,32 @@ const Dailys = () => {
       drag(drop(el));
     };
 
+    if (card.type === 'editable') {
+      return (
+        <div
+          ref={attachToCard}
+          data-handler-id={handlerId}
+          style={{
+            opacity: isDragging ? 0.5 : 1,
+            cursor: 'move',
+            position: 'relative',
+            marginBottom: '8px',
+          }}
+        >
+          <EditableCard
+            title={card.title}
+            description={card.description}
+            tag={card.tag}
+            timestamp={card.timestamp}
+            onEdit={() => {}}
+            onDelete={() => {
+              columnSetters[column](prev => prev.filter(c => c.timestamp !== card.timestamp));
+            }}
+          />
+        </div>
+      );
+    }
+
     return (
       <div
         ref={attachToCard}
@@ -340,30 +370,48 @@ const Dailys = () => {
                   <h2>Your challenge</h2>
                   <p>Generate your daily challenge!</p>
                 </div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1em', alignItems: 'center', marginBottom: '1em' }}>
+                  <input
+                    type="text"
+                    placeholder="Title"
+                    value={cardTitle}
+                    onChange={e => setCardTitle(e.target.value)}
+                    className="text-box"
+                    style={{ marginBottom: '0.5em', width: '100%', maxWidth: 400 }}
+                  />
+                  <textarea
+                    placeholder="Description"
+                    value={cardDescription}
+                    onChange={e => setCardDescription(e.target.value)}
+                    rows={2}
+                    className="text-box"
+                    style={{ marginBottom: '0.5em', width: '100%', maxWidth: 400 }}
+                  />
+                  <input
+                    type="text"
+                    placeholder="Tag"
+                    value={cardTag}
+                    onChange={e => setCardTag(e.target.value)}
+                    className="text-box"
+                    style={{ marginBottom: '0.5em', width: '100%', maxWidth: 400 }}
+                  />
+                </div>
                 <div className="cards-wrapper">
-                  {historyCards.map((card, index) => (
-                    <DraggableCard 
-                      key={`${card.timestamp}-${index}`} 
-                      card={card} 
-                      column="historyCards"
-                      index={index}
+                  {historyCards.filter(card => card.type === 'editable').map((card, index) => (
+                    <EditableCard
+                      key={`${card.timestamp}-${index}`}
+                      title={card.title}
+                      description={card.description}
+                      tag={card.tag}
+                      timestamp={card.timestamp}
+                      onEdit={() => {}}
+                      onDelete={() => {
+                        setHistoryCards(prev => prev.filter(c => c.timestamp !== card.timestamp));
+                      }}
                     />
                   ))}
                 </div>
-                <div style={{ 
-                  marginTop: '2em', 
-                  display: 'flex', 
-                  flexDirection: 'column', 
-                  alignItems: 'center' 
-                }}>
-                  <TextBox
-                    value={textBoxValue}
-                    onChange={e => setTextBoxValue(e.target.value)}
-                    onKeyDown={handleKeyDown}
-                    placeholder="Write your thoughts here... (press Enter to submit)"
-                    rows={4}
-                  />
-                </div>
+                {/* Remove the Add Editable Card button and use the main submit button for editable card creation */}
                 <div style={{ 
                   marginTop: '1em', 
                   display: 'flex', 
@@ -375,8 +423,25 @@ const Dailys = () => {
                   </button>
                   <button
                     className="submit-btn"
-                    onClick={handleSubmitEntry}
-                    disabled={!textBoxValue.trim()}
+                    onClick={() => {
+                      if (cardTitle.trim() && cardDescription.trim() && cardTag.trim()) {
+                        const timestamp = new Date().toLocaleString();
+                        setStartedCards([
+                          {
+                            title: cardTitle.trim(),
+                            description: cardDescription.trim(),
+                            tag: cardTag.trim(),
+                            timestamp,
+                            type: 'editable',
+                          },
+                          ...startedCards,
+                        ]);
+                        setCardTitle("");
+                        setCardDescription("");
+                        setCardTag("");
+                      }
+                    }}
+                    disabled={!(cardTitle.trim() && cardDescription.trim() && cardTag.trim())}
                   >
                     Submit
                   </button>
@@ -387,8 +452,8 @@ const Dailys = () => {
 
           {/* Kanban Columns */}
           <KanbanColumn
-            title="Started"
-            description="Things that I've started"
+            title="Queued"
+            description="Get me done this week"
             cards={startedCards}
             columnKey="startedCards"
           />

@@ -1,0 +1,55 @@
+.editable-card {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  padding: 16px;
+  margin-bottom: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  position: relative;
+}
+
+.editable-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.editable-card-title {
+  font-weight: 600;
+  font-size: 1.1em;
+  color: #222;
+}
+
+.editable-card-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.editable-card-icon {
+  cursor: pointer;
+  color: #888;
+  font-size: 1em;
+  transition: color 0.2s;
+}
+.editable-card-icon:hover {
+  color: #3730a3;
+}
+
+.editable-card-body {
+  color: #444;
+  font-size: 0.98em;
+}
+
+.editable-card-footer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85em;
+  color: #666;
+}
+
+.editable-card-timestamp {
+  color: #888;
+}
