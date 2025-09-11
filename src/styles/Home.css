@@ -189,7 +189,7 @@ p {
   position: sticky;
   top: 0;
   z-index: 10; /* Ensure it stays above other content */
-  background-color: #fff; /* Match the background to avoid overlap issues */
+  /* background-color: unset; */
 }
 
 .main-window-header h2 {
@@ -286,6 +286,11 @@ p {
   justify-content: space-between;
   height: 500px;
   overflow: hidden;
+  min-width: 250px;
+  height: calc(100vh - 15rem); /* 64px for navbar, 48px for footer */
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
 }
 
 .board {

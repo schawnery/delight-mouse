@@ -325,10 +325,6 @@ const Dailys = () => {
   return (
     <DndProvider backend={HTML5Backend}>
       <div className="home-container">
-        <header>
-          <h1>Dailys Todo</h1>
-          <p>Add more mundane shit to your shitlist</p>
-        </header>
 
         <div style={{ 
           display: 'flex', 

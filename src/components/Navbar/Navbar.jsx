@@ -9,6 +9,7 @@ export default function Navbar({ children }) {
       <div className="navbar-content">
         <button className="navbar-btn" onClick={() => navigate("/dailys")}>Dailys</button>
         <button className="navbar-btn" onClick={() => navigate("/home")}>Home</button>
+        <button className="navbar-btn" onClick={() => navigate("/about")}>About</button>
         {children}
       </div>
     </nav>

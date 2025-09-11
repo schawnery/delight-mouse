@@ -6,7 +6,7 @@
   z-index: 1000;
   background: var(--color-grey-5, #f7f7f8);
   border-bottom: 1px solid var(--color-grey-20, #e0e1e5);
-  padding: 0.75em 2em;
+  padding: 0.5em 3.5rem;
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -24,12 +24,12 @@
 }
 
 .navbar-btn {
-  background: var(--color-blue-40, #2D9CFF);
+  background: var(--color-blue-40, #000000);
   color: #fff;
   border: none;
   border-radius: 0.4em;
-  padding: 0.5em 1.2em;
-  font-size: 1em;
+  padding: 0.3em 0.7em;
+  font-size: 0.85em;
   cursor: pointer;
   transition: background 0.2s;
 }
