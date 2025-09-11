@@ -1,6 +1,7 @@
 .editable-card {
   background: #fff;
   border-radius: 10px;
+  border: 1px solid #e7e7e7;
   box-shadow: 0 2px 8px rgba(0,0,0,0.04);
   padding: 16px;
   margin-bottom: 12px;

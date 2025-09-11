@@ -204,8 +204,9 @@ p {
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  background: #f5f6fa;
-  border-radius: 12px 12px 0 0;
+  background: #ffffff;
+  border: 1px solid #e7e7e7;
+  border-radius: 8px;
   padding: 1rem 1.5rem;
   margin-bottom: 1rem;
   box-shadow: 0 2px 8px rgba(0,0,0,0.03);
