@@ -334,6 +334,14 @@ const Dailys = () => {
   };
 
   // Enhanced KanbanColumn with reordering support
+  const getHeaderClass = (columnKey) => {
+    if (columnKey === 'startedCards') return 'main-window-header queued';
+    if (columnKey === 'inProgressCards') return 'main-window-header inprogress';
+    if (columnKey === 'completedCards') return 'main-window-header completed';
+    if (columnKey === 'historyCards') return 'main-window-header history';
+    return 'main-window-header';
+  };
+
   const KanbanColumn = ({ title, description, cards, columnKey }) => (
     <main className="kanban-column">
       <DropZone 
@@ -342,7 +350,7 @@ const Dailys = () => {
         cards={cards}
       >
         <div className="challenge-content">
-          <div className="main-window-header">
+          <div className={getHeaderClass(columnKey)}>
             <h2>{title}</h2>
             <span className="kanban-count-pill">{cards.length}</span>
           </div>
@@ -377,8 +385,7 @@ const Dailys = () => {
             {activeTab === 1 && (
               <div className="challenge-content">
                 <div className="main-window-header">
-                  <h2>Your challenge</h2>
-                  <p>Generate your daily challenge!</p>
+                  <h2>Create deck</h2>
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1em', alignItems: 'center', marginBottom: '1em' }}>
                   <input

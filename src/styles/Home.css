@@ -204,13 +204,27 @@ p {
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  background: #ffffff;
   border: 1px solid #e7e7e7;
   border-radius: 8px;
   padding: 1rem 1.5rem;
   margin-bottom: 1rem;
   box-shadow: 0 2px 8px rgba(0,0,0,0.03);
 }
+
+/* Distinct background colors for each kanban column header */
+.main-window-header.queued {
+  background: #ffe89a;
+}
+.main-window-header.inprogress {
+  background: #aef5dd;
+}
+.main-window-header.completed {
+  background: #a3d3fa;
+}
+.main-window-header.history {
+  background: #f9b6de;
+}
+
 
 .main-window-header h2 {
   font-size: 1.1rem;
@@ -220,7 +234,6 @@ p {
 }
 
 .main-window-header .kanban-count-pill {
-  background: #ffe066;
   color: #222;
   font-size: 0.85rem;
   font-weight: 600;
@@ -228,6 +241,21 @@ p {
   padding: 0.25em 0.9em;
   margin-left: 1em;
   box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+.main-window-header.queued .kanban-count-pill {
+  background: #ffd600;
+}
+.main-window-header.inprogress .kanban-count-pill {
+  background: #22c55e;
+  color: #fff;
+}
+.main-window-header.completed .kanban-count-pill {
+  background: #2563eb;
+  color: #fff;
+}
+.main-window-header.history .kanban-count-pill {
+  background: #db2777;
+  color: #fff;
 }
 .clear-history-button {
   padding: 8px 16px;
