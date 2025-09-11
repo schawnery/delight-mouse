@@ -287,6 +287,15 @@ const Dailys = () => {
             onDelete={() => {
               columnSetters[column](prev => prev.filter(c => c.timestamp !== card.timestamp));
             }}
+            onSave={updatedCard => {
+              columnSetters[column](prev => {
+                const updated = prev.map(c =>
+                  c.timestamp === card.timestamp ? { ...c, ...updatedCard } : c
+                );
+                saveToStorage(STORAGE_KEYS[column], updated);
+                return updated;
+              });
+            }}
           />
         </div>
       );
