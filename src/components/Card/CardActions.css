@@ -1,7 +1,6 @@
 /* Card action icons stick to top right */
 .card-action-icons {
   position: absolute;
-  top: 8px;
   right: 8px;
   display: flex;
   gap: 8px;

@@ -183,7 +183,7 @@ const Dailys = () => {
   }, [columnStates, columnSetters]);
 
   // Enhanced DropZone that supports positioning
-  const DropZone = ({ onDrop, children, columnKey, cards }) => {
+  const DropZone = ({ onDrop, children}) => {
     const [{ isOver }, drop] = useDrop(() => ({
       accept: 'CARD',
       drop: (item, monitor) => {
@@ -338,7 +338,7 @@ const Dailys = () => {
             {cards.map((card, index) => (
               <DraggableCard 
                 key={`${card.timestamp}-${index}`} 
-                card={card} 
+                card={card}   
                 column={columnKey}
                 index={index}
               />
