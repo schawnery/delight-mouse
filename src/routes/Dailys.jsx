@@ -6,43 +6,14 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import Card from '../components/Card/Card';
 import TextBox from '../components/TextBox/TextBox';
 import EditableCard from '../components/Card/EditableCard';
+import KanbanColumn from '../components/Kanban/KanbanColumn';
+import DropZone from '../components/Kanban/DropZone';
+import DraggableCard from '../components/Kanban/DraggableCard';
+import { STORAGE_KEYS, COLUMNS, PROMPTS } from '../constants/kanban';
+import { getStoredData, saveToStorage, generateTimestamp } from '../utils/storage';
 import '../styles/Home.css';
 
-// Constants
-const STORAGE_KEYS = {
-  historyCards: 'dailys_historyCards',
-  startedCards: 'dailys_startedCards',
-  inProgressCards: 'dailys_inProgressCards',
-  completedCards: 'dailys_completedCards',
-  currentPrompt: 'dailys_currentPrompt'
-};
 
-const COLUMNS = {
-  historyCards: 'historyCards',
-  startedCards: 'startedCards',
-  inProgressCards: 'inProgressCards',
-  completedCards: 'completedCards'
-};
-
-const PROMPTS = [
-  'Take a 5-minute walk.',
-  'Drink a glass of water.',
-  'Write down three things you are grateful for.',
-  'Do 10 push-ups.',
-  'Read a page from a book.'
-];
-
-// Utility functions
-const getStoredData = (key, defaultValue = []) => {
-  const stored = localStorage.getItem(key);
-  return stored ? JSON.parse(stored) : defaultValue;
-};
-
-const saveToStorage = (key, data) => {
-  localStorage.setItem(key, JSON.stringify(data));
-};
-
-const generateTimestamp = () => new Date().toLocaleString();
 
 const Dailys = () => {
   const navigate = useNavigate();
@@ -87,23 +58,11 @@ const Dailys = () => {
   // Persist data to localStorage
   useEffect(() => {
     saveToStorage(STORAGE_KEYS.historyCards, historyCards);
-  }, [historyCards]);
-
-  useEffect(() => {
     saveToStorage(STORAGE_KEYS.startedCards, startedCards);
-  }, [startedCards]);
-
-  useEffect(() => {
     saveToStorage(STORAGE_KEYS.inProgressCards, inProgressCards);
-  }, [inProgressCards]);
-
-  useEffect(() => {
     saveToStorage(STORAGE_KEYS.completedCards, completedCards);
-  }, [completedCards]);
-
-  useEffect(() => {
     localStorage.setItem(STORAGE_KEYS.currentPrompt, currentPrompt);
-  }, [currentPrompt]);
+  }, [historyCards, startedCards, inProgressCards, completedCards, currentPrompt]);
 
   // Event handlers
   const handleGenerateChallenge = useCallback(() => {
@@ -385,7 +344,7 @@ const Dailys = () => {
             {activeTab === 1 && (
               <div className="challenge-content">
                 <div className="main-window-header">
-                  <h2>Create deck</h2>
+                  <h2>Create cards</h2>
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1em', alignItems: 'center', marginBottom: '1em' }}>
                   <input

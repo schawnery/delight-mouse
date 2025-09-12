@@ -331,15 +331,9 @@ p {
   align-items: flex-start;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  height: 500px;
-  overflow: hidden;
+  justify-content: flex-start;
   min-width: 250px;
-  height: calc(100vh - 15rem); /* 64px for navbar, 48px for footer */
-  display: flex;
-  flex-direction: column;
-  overflow-y: auto;
-  /* Removed padding, background color, and border for a cleaner look */
+  /* Removed fixed height and overflow for page scrolling */
   padding: 0;
   background-color: transparent;
   border: none;

@@ -1,0 +1,19 @@
+/* Card action icons stick to top right */
+.card-action-icons {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: flex;
+  gap: 8px;
+  z-index: 2;
+}
+
+.card-action-icon {
+  cursor: pointer;
+  color: #888;
+  font-size: 1.1em;
+  transition: color 0.2s;
+}
+.card-action-icon:hover {
+  color: #3730a3;
+}

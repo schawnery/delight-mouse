@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react';
-import { FaTrash, FaEdit, FaSave } from 'react-icons/fa';
+import { FaSave } from 'react-icons/fa';
+import CardActions from './CardActions';
 import Tag from '../Tag/Tag';
 import './EditableCard.css';
 
@@ -37,19 +38,18 @@ const EditableCard = ({ title, description, tag, timestamp, onEdit, onDelete, on
             value={editTitle}
             onChange={e => setEditTitle(e.target.value)}
             className="text-box"
-            style={{ marginBottom: '0.5em', width: '100%', maxWidth: 400 }}
           />
         ) : (
           <span className="editable-card-title">{title}</span>
         )}
-        <div className="editable-card-actions">
-          {isEditing ? (
-            <FaSave className="editable-card-icon" onClick={handleSaveClick} />
-          ) : (
-            <FaEdit className="editable-card-icon" onClick={handleEditClick} />
-          )}
-          <FaTrash className="editable-card-icon" onClick={onDelete} />
-        </div>
+        {isEditing ? (
+          <div className="card-action-icons">
+            <FaSave className="card-action-icon" onClick={handleSaveClick} />
+            <CardActions onDelete={onDelete} />
+          </div>
+        ) : (
+          <CardActions onEdit={handleEditClick} onDelete={onDelete} />
+        )}
       </div>
       <div className="editable-card-body">
         {isEditing ? (
