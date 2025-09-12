@@ -1,3 +1,5 @@
+const WIP_LIMIT = 3;
+const QUEUED_LIMIT = 35;
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaRedo, FaTrash } from 'react-icons/fa';
@@ -86,13 +88,6 @@ const Dailys = () => {
   }, []);
 
   /**
-   * Clear all cards from history column.
-   */
-  const handleClearHistory = useCallback(() => {
-    setHistoryCards([]);
-  }, []);
-
-  /**
    * Submit a new entry from the text box to history.
    */
   const handleSubmitEntry = useCallback(() => {
@@ -133,6 +128,15 @@ const Dailys = () => {
     const sourceColumn = Object.keys(columnStates).find(col => 
       columnStates[col].some(card => card.timestamp === draggedCard.timestamp)
     );
+
+    // Enforce WIP limits for inProgressCards and startedCards (Queued)
+    if (
+      (targetColumn === 'inProgressCards' && columnStates['inProgressCards'].length >= WIP_LIMIT) ||
+      (targetColumn === 'startedCards' && columnStates['startedCards'].length >= QUEUED_LIMIT)
+    ) {
+      // Do nothing: card stays in original column
+      return;
+    }
 
     // If moving to a different column
     if (sourceColumn !== targetColumn) {
@@ -325,14 +329,25 @@ const Dailys = () => {
   const KanbanColumn = ({ title, description, cards, columnKey }) => (
     <main className="kanban-column">
       <DropZone 
-        onDrop={(card, position) => handleCardMove(card, columnKey, position)}
+        onDrop={(card, position) => {
+          // Prevent dropping if WIP limit reached for inProgressCards or Queued
+          if ((columnKey === 'inProgressCards' && cards.length >= WIP_LIMIT) ||
+              (columnKey === 'startedCards' && cards.length >= QUEUED_LIMIT)) return;
+          handleCardMove(card, columnKey, position);
+        }}
         columnKey={columnKey}
         cards={cards}
       >
         <div className="challenge-content">
           <div className={getHeaderClass(columnKey)}>
             <h2>{title}</h2>
-            <span className="kanban-count-pill">{cards.length}</span>
+            <span className="kanban-count-pill">
+              {columnKey === 'inProgressCards'
+                ? `${cards.length}/${WIP_LIMIT}`
+                : columnKey === 'startedCards'
+                  ? `${cards.length}/${QUEUED_LIMIT}`
+                  : cards.length}
+            </span>
           </div>
           <div className={columnKey === 'historyCards' ? 'cards-wrapper' : 'right-cards-wrapper'}>
             {cards.map((card, index) => (
@@ -425,7 +440,11 @@ const Dailys = () => {
                   <button
                     className="submit-btn"
                     onClick={() => {
-                      if (cardTitle.trim() && cardDescription.trim()) {
+                      if (
+                        cardTitle.trim() &&
+                        cardDescription.trim() &&
+                        startedCards.length < 35
+                      ) {
                         const timestamp = new Date().toLocaleString();
                         setStartedCards([
                           {
@@ -442,7 +461,10 @@ const Dailys = () => {
                         setCardTag("");
                       }
                     }}
-                    disabled={!(cardTitle.trim() && cardDescription.trim())}
+                    disabled={
+                      !(cardTitle.trim() && cardDescription.trim()) ||
+                      startedCards.length >= 35
+                    }
                   >
                     Submit
                   </button>

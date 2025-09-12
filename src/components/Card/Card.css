@@ -8,3 +8,8 @@
   margin-bottom: 1em;
   box-shadow: none;
 }
+
+.card p {
+  word-break: break-word;
+  white-space: pre-line;
+}
