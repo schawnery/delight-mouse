@@ -1,3 +1,28 @@
+/* Kanban board row layout */
+.kanban-board-row {
+  display: flex;
+  flex-direction: row;
+  max-width: calc(100vw - 4rem);
+  margin: 0;
+  gap: 1rem;
+}
+
+/* Card creation fields layout */
+.card-create-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  align-items: center;
+  margin-bottom: 1em;
+}
+
+/* Card creation actions layout */
+.card-create-actions {
+  margin-top: 1em;
+  display: flex;
+  gap: 1em;
+  justify-content: center;
+}
 /* Input with counter bottom right */
 .input-with-counter {
   position: relative;

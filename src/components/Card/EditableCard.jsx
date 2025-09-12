@@ -4,6 +4,7 @@ import { FaSave } from 'react-icons/fa';
 import CardActions from './CardActions';
 import Tag from '../Tag/Tag';
 import './EditableCard.css';
+import PropTypes from 'prop-types';
 
 const EditableCard = ({ title, description, tag, timestamp, onEdit, onDelete, onSave }) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -90,6 +91,16 @@ const EditableCard = ({ title, description, tag, timestamp, onEdit, onDelete, on
       </div>
     </div>
   );
+};
+
+EditableCard.propTypes = {
+  title: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+  tag: PropTypes.string,
+  timestamp: PropTypes.string.isRequired,
+  onEdit: PropTypes.func,
+  onDelete: PropTypes.func,
+  onSave: PropTypes.func
 };
 
 export default EditableCard;

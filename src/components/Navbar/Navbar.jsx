@@ -1,8 +1,9 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 import "./Navbar.css";
 
-export default function Navbar({ children }) {
+function Navbar({ children }) {
   const navigate = useNavigate();
   return (
     <nav className="navbar">
@@ -15,3 +16,9 @@ export default function Navbar({ children }) {
     </nav>
   );
 }
+
+Navbar.propTypes = {
+  children: PropTypes.node
+};
+
+export default Navbar;

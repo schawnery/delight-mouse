@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import styles from './KanbanColumn.module.css';
 
@@ -15,5 +16,12 @@ const KanbanColumn = ({ title, cards, columnKey, children }) => (
     </div>
   </main>
 );
+
+KanbanColumn.propTypes = {
+  title: PropTypes.string.isRequired,
+  cards: PropTypes.array.isRequired,
+  columnKey: PropTypes.string,
+  children: PropTypes.node
+};
 
 export default KanbanColumn;

@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import "./TextBox.css";
 
 /**
@@ -10,7 +11,7 @@ import "./TextBox.css";
  *   rows: number (optional, default 3)
  *   ...rest: any other textarea props
  */
-export default function TextBox({ value, onChange, placeholder = "", rows = 3, ...rest }) {
+function TextBox({ value, onChange, placeholder = "", rows = 3, ...rest }) {
   return (
     <textarea
       className="text-box"
@@ -22,3 +23,12 @@ export default function TextBox({ value, onChange, placeholder = "", rows = 3, .
     />
   );
 }
+
+TextBox.propTypes = {
+  value: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+  placeholder: PropTypes.string,
+  rows: PropTypes.number
+};
+
+export default TextBox;

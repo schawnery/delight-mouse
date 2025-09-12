@@ -15,6 +15,14 @@ import '../styles/Home.css';
 
 
 
+/**
+ * Dailys - Main Kanban board route for daily challenges and tasks.
+ * Features:
+ *   - Card creation, editing, drag-and-drop between columns
+ *   - LocalStorage persistence
+ *   - Challenge prompt generation
+ *   - Character limits and counters
+ */
 const Dailys = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState(1);
@@ -65,6 +73,9 @@ const Dailys = () => {
   }, [historyCards, startedCards, inProgressCards, completedCards, currentPrompt]);
 
   // Event handlers
+  /**
+   * Generate a random challenge prompt and add to history.
+   */
   const handleGenerateChallenge = useCallback(() => {
     const randomPrompt = PROMPTS[Math.floor(Math.random() * PROMPTS.length)];
     const timestamp = generateTimestamp();
@@ -74,10 +85,16 @@ const Dailys = () => {
     setHistoryCards(prev => [newCard, ...prev]);
   }, []);
 
+  /**
+   * Clear all cards from history column.
+   */
   const handleClearHistory = useCallback(() => {
     setHistoryCards([]);
   }, []);
 
+  /**
+   * Submit a new entry from the text box to history.
+   */
   const handleSubmitEntry = useCallback(() => {
     const trimmedValue = textBoxValue.trim();
     if (!trimmedValue) return;
@@ -89,6 +106,11 @@ const Dailys = () => {
     setTextBoxValue("");
   }, [textBoxValue]);
 
+  /**
+   * Delete a card from a specified column.
+   * @param {Object} card - Card object to delete
+   * @param {string} columnName - Column key
+   */
   const handleDeleteCard = useCallback((card, columnName) => {
     const setter = columnSetters[columnName];
     const storageKey = STORAGE_KEYS[columnName];
@@ -101,6 +123,12 @@ const Dailys = () => {
   }, []);
 
   // Enhanced drop handler that supports both column changes and reordering
+  /**
+   * Move a card between columns or reorder within a column.
+   * @param {Object} draggedCard - Card being moved
+   * @param {string} targetColumn - Target column key
+   * @param {number|null} hoverIndex - Position to insert card
+   */
   const handleCardMove = useCallback((draggedCard, targetColumn, hoverIndex = null) => {
     const sourceColumn = Object.keys(columnStates).find(col => 
       columnStates[col].some(card => card.timestamp === draggedCard.timestamp)
@@ -325,13 +353,7 @@ const Dailys = () => {
     <DndProvider backend={HTML5Backend}>
       <div className="home-container">
 
-        <div style={{ 
-          display: 'flex', 
-          flexDirection: 'row',
-          maxWidth: 'calc(100vw - 4rem)', 
-          margin: '0', 
-          gap: '1rem'
-        }}>
+  <div className="kanban-board-row">
           {/* Challenge Generation Column */}
           <main className="kanban-column">
             {activeTab === 1 && (
@@ -339,7 +361,7 @@ const Dailys = () => {
                 <div className="main-window-header">
                   <h2>Create cards</h2>
                 </div>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '1em', alignItems: 'center', marginBottom: '1em' }}>
+                <div className="card-create-fields">
                   <div className="input-with-counter">
                     <input
                       type="text"
@@ -396,12 +418,7 @@ const Dailys = () => {
                   ))}
                 </div>
                 {/* Remove the Add Editable Card button and use the main submit button for editable card creation */}
-                <div style={{ 
-                  marginTop: '1em', 
-                  display: 'flex', 
-                  gap: '1em', 
-                  justifyContent: 'center' 
-                }}>
+                <div className="card-create-actions">
                   <button className="generate-btn" onClick={handleGenerateChallenge}>
                     <FaRedo className="icon-position" /> Generate
                   </button>
