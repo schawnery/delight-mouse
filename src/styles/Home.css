@@ -1,3 +1,30 @@
+/* Input with counter bottom right */
+.input-with-counter {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+}
+.input-with-counter .input-counter {
+  position: absolute;
+  right: 8px;
+  bottom: 6px;
+  font-size: 0.78em;
+  color: #d32f2f;
+  pointer-events: none;
+  background: transparent;
+  z-index: 2;
+}
+/* Card description limit styles for creation form */
+.text-box-limit {
+  border: 2px solid #ffb3b3 !important;
+}
+
+.description-counter {
+  text-align: right;
+  font-size: 0.9em;
+  color: #d32f2f;
+  margin-top: 2px;
+}
 /* Home.css */
 
 .home-container {

@@ -9,6 +9,7 @@ const EditableCard = ({ title, description, tag, timestamp, onEdit, onDelete, on
   const [isEditing, setIsEditing] = useState(false);
   const [editTitle, setEditTitle] = useState(title);
   const [editDescription, setEditDescription] = useState(description);
+  const MAX_DESCRIPTION_LENGTH = 140;
   const [editTag, setEditTag] = useState(tag);
 
   const handleEditClick = () => {
@@ -53,30 +54,39 @@ const EditableCard = ({ title, description, tag, timestamp, onEdit, onDelete, on
       </div>
       <div className="editable-card-body">
         {isEditing ? (
-          <textarea
-            value={editDescription}
-            onChange={e => setEditDescription(e.target.value)}
-            className="text-box"
-            rows={2}
-            style={{ marginBottom: '0.5em', width: '100%', maxWidth: 400, textAlign: 'left' }}
-          />
+          <>
+            <textarea
+              value={editDescription}
+              onChange={e => {
+                if (e.target.value.length <= MAX_DESCRIPTION_LENGTH) {
+                  setEditDescription(e.target.value);
+                }
+              }}
+              className={`text-box${editDescription.length === MAX_DESCRIPTION_LENGTH ? ' text-box-limit' : ''}`}
+              rows={2}
+              maxLength={MAX_DESCRIPTION_LENGTH}
+            />
+            <div className="description-counter">
+              {editDescription.length}/{MAX_DESCRIPTION_LENGTH}
+            </div>
+          </>
         ) : (
           <span className="editable-card-description" style={{ textAlign: 'left', display: 'block' }}>{description}</span>
         )}
       </div>
       <div className="editable-card-footer">
-        {isEditing ? (
-          <input
-            type="text"
-            value={editTag}
-            onChange={e => setEditTag(e.target.value)}
-            className="text-box"
-            style={{ marginBottom: '0.5em', width: '100%', maxWidth: 400 }}
-          />
-        ) : (
-          <Tag text={tag} />
-        )}
-        <span className="editable-card-timestamp">{timestamp}</span>
+          {isEditing ? (
+            <input
+              type="text"
+              value={editTag}
+              onChange={e => setEditTag(e.target.value)}
+              className="text-box"
+              style={{ marginBottom: '0.5em', width: '100%', maxWidth: 400 }}
+            />
+          ) : (
+            tag ? <Tag text={tag} /> : null
+          )}
+          <span className="editable-card-timestamp">{timestamp}</span>
       </div>
     </div>
   );

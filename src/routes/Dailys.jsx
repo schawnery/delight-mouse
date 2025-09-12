@@ -154,13 +154,6 @@ const Dailys = () => {
     }
   }, [columnStates, columnSetters]);
 
-  const handleKeyDown = useCallback((e) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      handleSubmitEntry();
-    }
-  }, [handleSubmitEntry]);
-
   // Enhanced DropZone that supports positioning
   const DropZone = ({ onDrop, children, columnKey, cards }) => {
     const [{ isOver }, drop] = useDrop(() => ({
@@ -347,25 +340,40 @@ const Dailys = () => {
                   <h2>Create cards</h2>
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1em', alignItems: 'center', marginBottom: '1em' }}>
+                  <div className="input-with-counter">
+                    <input
+                      type="text"
+                      placeholder="Title"
+                      value={cardTitle}
+                      onChange={e => {
+                        if (e.target.value.length <= 55) {
+                          setCardTitle(e.target.value);
+                        }
+                      }}
+                      className={`text-box${cardTitle.length === 55 ? ' text-box-limit' : ''}`}
+                      maxLength={55}
+                      style={{ width: '100%', maxWidth: 400 }}
+                    />
+                    <span className="input-counter">{cardTitle.length}/55</span>
+                  </div>
+                  <div className="input-with-counter">
+                    <textarea
+                      placeholder="Description"
+                      value={cardDescription}
+                      onChange={e => {
+                        if (e.target.value.length <= 140) {
+                          setCardDescription(e.target.value);
+                        }
+                      }}
+                      rows={2}
+                      className={`text-box${cardDescription.length === 140 ? ' text-box-limit' : ''}`}
+                      maxLength={140}
+                    />
+                    <span className="input-counter">{cardDescription.length}/140</span>
+                  </div>
                   <input
                     type="text"
-                    placeholder="Title"
-                    value={cardTitle}
-                    onChange={e => setCardTitle(e.target.value)}
-                    className="text-box"
-                    style={{ marginBottom: '0.5em', width: '100%', maxWidth: 400 }}
-                  />
-                  <textarea
-                    placeholder="Description"
-                    value={cardDescription}
-                    onChange={e => setCardDescription(e.target.value)}
-                    rows={2}
-                    className="text-box"
-                    style={{ marginBottom: '0.5em', width: '100%', maxWidth: 400 }}
-                  />
-                  <input
-                    type="text"
-                    placeholder="Tag"
+                    placeholder="Tag (optional)"
                     value={cardTag}
                     onChange={e => setCardTag(e.target.value)}
                     className="text-box"
@@ -400,7 +408,7 @@ const Dailys = () => {
                   <button
                     className="submit-btn"
                     onClick={() => {
-                      if (cardTitle.trim() && cardDescription.trim() && cardTag.trim()) {
+                      if (cardTitle.trim() && cardDescription.trim()) {
                         const timestamp = new Date().toLocaleString();
                         setStartedCards([
                           {
@@ -417,7 +425,7 @@ const Dailys = () => {
                         setCardTag("");
                       }
                     }}
-                    disabled={!(cardTitle.trim() && cardDescription.trim() && cardTag.trim())}
+                    disabled={!(cardTitle.trim() && cardDescription.trim())}
                   >
                     Submit
                   </button>
