@@ -4,6 +4,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaRedo, FaTrash } from 'react-icons/fa';
 import { FaPlus } from 'react-icons/fa';
+import WeeklyProgressBar from '../components/WeeklyProgressBar/WeeklyProgressBar';
 import { useDrag, useDrop, DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import Card from '../components/Card/Card';
@@ -434,7 +435,8 @@ const Dailys = () => {
   return (
     <DndProvider backend={HTML5Backend}>
       <div className="home-container">
-        <div style={{ marginBottom: '18px', display: 'flex', justifyContent: 'flex-end' }}>
+        <div style={{ marginBottom: '18px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '24px' }}>
+          <WeeklyProgressBar />
           <button className="generate-btn" onClick={() => setIsModalOpen(true)} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <FaPlus style={{ fontSize: '1.1em' }} />
             Create card
