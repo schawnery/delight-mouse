@@ -55,8 +55,9 @@
 .home-container {
   text-align: center;
   padding: 20px;
-  width: 100vw;
-  margin: 0;
+  max-width: calc(100vw - 4rem);
+  width: 100%;
+  margin: 0 auto;
   margin-top: 64px;
 }
 

@@ -3,6 +3,7 @@ const QUEUED_LIMIT = 35;
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaRedo, FaTrash } from 'react-icons/fa';
+import { FaPlus } from 'react-icons/fa';
 import { useDrag, useDrop, DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import Card from '../components/Card/Card';
@@ -433,8 +434,9 @@ const Dailys = () => {
   return (
     <DndProvider backend={HTML5Backend}>
       <div className="home-container">
-        <div style={{ marginBottom: '18px' }}>
-          <button className="generate-btn" onClick={() => setIsModalOpen(true)}>
+        <div style={{ marginBottom: '18px', display: 'flex', justifyContent: 'flex-end' }}>
+          <button className="generate-btn" onClick={() => setIsModalOpen(true)} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <FaPlus style={{ fontSize: '1.1em' }} />
             Create card
           </button>
         </div>
@@ -539,107 +541,7 @@ const Dailys = () => {
         </Modal>
         <div className="kanban-board-row">
           {/* Challenge Generation Column */}
-          <main className="kanban-column">
-            {activeTab === 1 && (
-              <div className="challenge-content">
-                <div className="main-window-header">
-                  <h2>Create cards</h2>
-                </div>
-                <div className="card-create-fields">
-                  <div className="input-with-counter">
-                    <input
-                      type="text"
-                      placeholder="Title"
-                      value={cardTitle}
-                      onChange={e => {
-                        if (e.target.value.length <= 55) {
-                          setCardTitle(e.target.value);
-                        }
-                      }}
-                      className={`text-box${cardTitle.length === 55 ? ' text-box-limit' : ''}`}
-                      maxLength={55}
-                      style={{ width: '100%', maxWidth: 400 }}
-                    />
-                    <span className="input-counter">{cardTitle.length}/55</span>
-                  </div>
-                  <div className="input-with-counter">
-                    <textarea
-                      placeholder="Description"
-                      value={cardDescription}
-                      onChange={e => {
-                        if (e.target.value.length <= 140) {
-                          setCardDescription(e.target.value);
-                        }
-                      }}
-                      rows={2}
-                      className={`text-box${cardDescription.length === 140 ? ' text-box-limit' : ''}`}
-                      maxLength={140}
-                    />
-                    <span className="input-counter">{cardDescription.length}/140</span>
-                  </div>
-                  <input
-                    type="text"
-                    placeholder="Tag (optional)"
-                    value={cardTag}
-                    onChange={e => setCardTag(e.target.value)}
-                    className="text-box"
-                    style={{ marginBottom: '0.5em', width: '100%', maxWidth: 400 }}
-                  />
-                </div>
-                <div className="cards-wrapper">
-                  {historyCards.filter(card => card.type === 'editable').map((card, index) => (
-                    <EditableCard
-                      key={`${card.timestamp}-${index}`}
-                      title={card.title}
-                      description={card.description}
-                      tag={card.tag}
-                      timestamp={card.timestamp}
-                      onEdit={() => {}}
-                      onDelete={() => {
-                        setHistoryCards(prev => prev.filter(c => c.timestamp !== card.timestamp));
-                      }}
-                    />
-                  ))}
-                </div>
-                <div className="card-create-actions">
-                  <button className="generate-btn" onClick={handleGenerateChallenge}>
-                    <FaRedo className="icon-position" /> Generate
-                  </button>
-                  <button
-                    className="submit-btn"
-                    onClick={() => {
-                      if (
-                        cardTitle.trim() &&
-                        cardDescription.trim() &&
-                        startedCards.length < 35
-                      ) {
-                        const timestamp = new Date().toLocaleString();
-                        setStartedCards([
-                          {
-                            title: cardTitle.trim(),
-                            description: cardDescription.trim(),
-                            tag: cardTag.trim(),
-                            timestamp,
-                            type: 'editable',
-                          },
-                          ...startedCards,
-                        ]);
-                        setCardTitle("");
-                        setCardDescription("");
-                        setCardTag("");
-                      }
-                    }}
-                    disabled={
-                      !(cardTitle.trim() && cardDescription.trim()) ||
-                      startedCards.length >= 35
-                    }
-                  >
-                    Submit
-                  </button>
-                </div>
-              </div>
-            )}
-          </main>
+          
 
           {/* Kanban Columns */}
           <KanbanColumn
