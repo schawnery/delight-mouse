@@ -21,14 +21,14 @@ import '../styles/Home.css';
 
 
 /**
- * Dailys - Main Kanban board route for daily challenges and tasks.
+ * Play - Main Kanban board route for daily challenges and tasks.
  * Features:
  *   - Card creation, editing, drag-and-drop between columns
  *   - LocalStorage persistence
  *   - Challenge prompt generation
  *   - Character limits and counters
  */
-const Dailys = () => {
+const Play = () => {
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [editingCard, setEditingCard] = useState(null);
   const navigate = useNavigate();
@@ -435,13 +435,14 @@ const Dailys = () => {
   return (
     <DndProvider backend={HTML5Backend}>
       <div className="home-container">
-        <div style={{ marginBottom: '18px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '24px' }}>
-          <WeeklyProgressBar />
+        <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginBottom: '8px' }}>
           <button className="generate-btn" onClick={() => setIsModalOpen(true)} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <FaPlus style={{ fontSize: '1.1em' }} />
             Create card
           </button>
+          
         </div>
+        <WeeklyProgressBar />
         <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
           <div className="modal-header">
             <div>
@@ -572,4 +573,4 @@ const Dailys = () => {
   );
 };
 
-export default Dailys;
+export default Play;

@@ -8,7 +8,7 @@ function Navbar({ children }) {
   return (
     <nav className="navbar">
       <div className="navbar-content">
-        <button className="navbar-btn" onClick={() => navigate("/dailys")}>Dailys</button>
+        <button className="navbar-btn" onClick={() => navigate("/play")}>Play</button>
         <button className="navbar-btn" onClick={() => navigate("/about")}>About</button>
         {children}
       </div>

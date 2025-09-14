@@ -1,31 +1,51 @@
 .weekly-progress-card {
   background: #fff;
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-  padding: 18px 24px 12px 24px;
-  margin: 12px 0;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  padding: 22px 28px 18px 28px;
+  margin: 16px 0;
   font-family: inherit;
-  width: 100%;
 }
 .weekly-progress-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 1.1em;
-  margin-bottom: 8px;
+  font-size: 1em;
+  margin-bottom: 14px;
+}
+.weekly-progress-header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.weekly-progress-header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 .weekly-progress-title {
-  font-weight: 600;
-  font-size: 1.1em;
+  font-weight: 400;
+  font-size: 1rem;
+  color: #2d2d2d;
+}
+.weekly-progress-percent {
+  font-weight: 300;
+  font-size: 1rem;
+  color: #2d2d2d;
 }
 .weekly-progress-multiplier {
-  font-weight: 500;
-  font-size: 1em;
-  margin-left: 8px;
+  font-weight: 300;
+  font-size: 1rem;
+  color: #c53;
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 .weekly-progress-timeleft {
-  font-size: 0.98em;
-  color: #666;
+  font-weight: 300;
+  font-size: 1rem;
+  color: #2d2d2d;
 }
 .weekly-progress-bar-bg {
   width: 100%;
@@ -33,7 +53,7 @@
   background: #e5e7eb;
   border-radius: 6px;
   overflow: hidden;
-  margin-bottom: 8px;
+  margin-bottom: 14px;
 }
 .weekly-progress-bar-fill {
   height: 100%;
@@ -53,7 +73,9 @@
   font-weight: 500;
 }
 .weekly-progress-desc {
-  font-size: 0.97em;
-  color: #666;
-  margin-top: 4px;
+  font-size: 0.85rem;
+  font-weight: 300;
+  color: #444;
+  margin-top: 10px;
+  text-align: left;
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
-import Dailys from './routes/Dailys';
+import Play from './routes/Play';
 import About from './routes/About';
 import Navbar from './components/Navbar/Navbar';
 import Footer from './components/Footer/Footer';
@@ -12,8 +12,8 @@ function App() {
     <>
       <Navbar />
       <Routes>
-  <Route path="/" element={<Dailys />} />
-        <Route path="/dailys" element={<Dailys />} />
+  <Route path="/" element={<Play />} />
+  <Route path="/play" element={<Play />} />
         <Route path="/about" element={<About />} />
       </Routes>
       <Footer />

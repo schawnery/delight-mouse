@@ -1,9 +1,9 @@
 export const STORAGE_KEYS = {
-  historyCards: 'dailys_historyCards',
-  startedCards: 'dailys_startedCards',
-  inProgressCards: 'dailys_inProgressCards',
-  completedCards: 'dailys_completedCards',
-  currentPrompt: 'dailys_currentPrompt'
+  historyCards: 'play_historyCards',
+  startedCards: 'play_startedCards',
+  inProgressCards: 'play_inProgressCards',
+  completedCards: 'play_completedCards',
+  currentPrompt: 'play_currentPrompt'
 };
 
 export const COLUMNS = {
