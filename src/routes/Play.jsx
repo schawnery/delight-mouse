@@ -466,8 +466,8 @@ const Play = () => {
       <div className="home-container">
         <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginBottom: '8px' }}>
           <ScoreBox score={score} />
-          <button className="generate-btn" onClick={() => setIsModalOpen(true)} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <FaPlus style={{ fontSize: '1.1em' }} />
+          <button className="generate-btn" onClick={() => setIsModalOpen(true)} style={{ display: 'flex', alignItems: 'center', gap: '6px', fontWeight: 400, fontSize: '1rem', color: '#fff', padding: '9px 18px', height: '38px', lineHeight: '20px' }}>
+            <FaPlus style={{ fontSize: '0.95em', fontWeight: 200, color: '#fff' }} />
             Create card
           </button>
         </div>
