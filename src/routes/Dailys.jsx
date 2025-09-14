@@ -8,6 +8,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import Card from '../components/Card/Card';
 import TextBox from '../components/TextBox/TextBox';
 import EditableCard from '../components/Card/EditableCard';
+import Modal from '../components/Modal/Modal';
 import KanbanColumn from '../components/Kanban/KanbanColumn';
 import DropZone from '../components/Kanban/DropZone';
 import DraggableCard from '../components/Kanban/DraggableCard';
@@ -26,12 +27,15 @@ import '../styles/Home.css';
  *   - Character limits and counters
  */
 const Dailys = () => {
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [editingCard, setEditingCard] = useState(null);
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState(1);
   const [textBoxValue, setTextBoxValue] = useState("");
   const [cardTitle, setCardTitle] = useState("");
   const [cardDescription, setCardDescription] = useState("");
   const [cardTag, setCardTag] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
   
   // Initialize state from localStorage
   const [historyCards, setHistoryCards] = useState(() => 
@@ -267,7 +271,10 @@ const Dailys = () => {
             description={card.description}
             tag={card.tag}
             timestamp={card.timestamp}
-            onEdit={() => {}}
+            onEdit={() => {
+              setEditingCard({ ...card, column });
+              setEditModalOpen(true);
+            }}
             onDelete={() => {
               columnSetters[column](prev => prev.filter(c => c.timestamp !== card.timestamp));
             }}
@@ -281,6 +288,65 @@ const Dailys = () => {
               });
             }}
           />
+      {editModalOpen && editingCard && (
+        <Modal isOpen={editModalOpen} onClose={() => setEditModalOpen(false)}>
+          <div className="modal-header">
+            <div className="modal-title">Edit Card</div>
+            <div className="modal-desc">Edit the card details below. Changes will be saved to the selected card.</div>
+          </div>
+          <div className="modal-form-row">
+            <label className="modal-label" htmlFor="edit-title">Title *</label>
+            <input
+              id="edit-title"
+              type="text"
+              className="modal-input"
+              placeholder="Enter card title..."
+              value={editingCard.title}
+              maxLength={55}
+              required
+              onChange={e => setEditingCard({ ...editingCard, title: e.target.value })}
+            />
+            <div className={`input-counter${editingCard.title.length === 55 ? ' input-counter-limit' : ''}`}>{editingCard.title.length}/55</div>
+          </div>
+          <div className="modal-form-row">
+            <label className="modal-label" htmlFor="edit-desc">Description</label>
+            <TextBox
+              id="edit-desc"
+              value={editingCard.description}
+              onChange={e => setEditingCard({ ...editingCard, description: e.target.value })}
+              placeholder="Enter card description..."
+              rows={3}
+              maxLength={140}
+            />
+            <div className={`input-counter${editingCard.description.length === 140 ? ' input-counter-limit' : ''}`}>{editingCard.description.length}/140</div>
+          </div>
+          <div className="modal-form-row">
+            <label className="modal-label" htmlFor="edit-tag">Tag</label>
+            <input
+              id="edit-tag"
+              type="text"
+              className="modal-input"
+              placeholder="Enter tag (optional)..."
+              value={editingCard.tag || ''}
+              maxLength={30}
+              onChange={e => setEditingCard({ ...editingCard, tag: e.target.value })}
+            />
+          </div>
+          <div className="card-create-actions">
+            <button
+              className="submit-btn"
+              onClick={() => {
+                columnSetters[editingCard.column](prev => prev.map(c =>
+                  c.timestamp === editingCard.timestamp ? { ...c, ...editingCard } : c
+                ));
+                setEditModalOpen(false);
+              }}
+              disabled={editingCard.title.trim() === '' || editingCard.description.trim() === ''}
+            >Save</button>
+            <button className="cancel-btn" onClick={() => setEditModalOpen(false)}>Cancel</button>
+          </div>
+        </Modal>
+      )}
         </div>
       );
     }
@@ -367,8 +433,111 @@ const Dailys = () => {
   return (
     <DndProvider backend={HTML5Backend}>
       <div className="home-container">
-
-  <div className="kanban-board-row">
+        <div style={{ marginBottom: '18px' }}>
+          <button className="generate-btn" onClick={() => setIsModalOpen(true)}>
+            Create card
+          </button>
+        </div>
+        <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+          <div className="modal-header">
+            <div>
+              <div className="modal-title">Create New Card</div>
+              <div className="modal-desc">Add a new task card to your kanban board. It will be added to the Queued column.</div>
+            </div>
+          </div>
+          <form
+            onSubmit={e => {
+              e.preventDefault();
+              if (
+                cardTitle.trim() &&
+                startedCards.length < 35
+              ) {
+                const timestamp = new Date().toLocaleString();
+                setStartedCards([
+                  {
+                    title: cardTitle.trim(),
+                    description: cardDescription.trim(),
+                    tag: cardTag.trim(),
+                    timestamp,
+                    type: 'editable',
+                  },
+                  ...startedCards,
+                ]);
+                setCardTitle("");
+                setCardDescription("");
+                setCardTag("");
+                setIsModalOpen(false);
+              }
+            }}
+          >
+            <div className="modal-form-row">
+              <label className="modal-label" htmlFor="modal-title">Title *</label>
+              <input
+                id="modal-title"
+                type="text"
+                className="modal-input"
+                placeholder="Enter card title..."
+                value={cardTitle}
+                onChange={e => {
+                  if (e.target.value.length <= 55) {
+                    setCardTitle(e.target.value);
+                  }
+                }}
+                maxLength={55}
+                required
+              />
+              <div className={`input-counter${cardTitle.length === 55 ? ' input-counter-limit' : ''}`}>{cardTitle.length}/55</div>
+            </div>
+            <div className="modal-form-row">
+              <label className="modal-label" htmlFor="modal-desc">Description</label>
+              <TextBox
+                id="modal-desc"
+                value={cardDescription}
+                onChange={e => {
+                  if (e.target.value.length <= 140) {
+                    setCardDescription(e.target.value);
+                  }
+                }}
+                placeholder="Enter card description..."
+                rows={3}
+                maxLength={140}
+              />
+              <div className={`input-counter${cardDescription.length === 140 ? ' input-counter-limit' : ''}`}>{cardDescription.length}/140</div>
+            </div>
+            <div className="modal-form-row">
+              <label className="modal-label" htmlFor="modal-tag">Tag</label>
+              <input
+                id="modal-tag"
+                type="text"
+                className="modal-input"
+                placeholder="Enter tag (optional)..."
+                value={cardTag}
+                onChange={e => setCardTag(e.target.value)}
+                maxLength={32}
+              />
+            </div>
+            <div className="modal-actions">
+              <button
+                type="button"
+                className="modal-cancel-btn"
+                onClick={() => setIsModalOpen(false)}
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="modal-submit-btn"
+                disabled={
+                  !cardTitle.trim() ||
+                  startedCards.length >= 35
+                }
+              >
+                Create Card
+              </button>
+            </div>
+          </form>
+        </Modal>
+        <div className="kanban-board-row">
           {/* Challenge Generation Column */}
           <main className="kanban-column">
             {activeTab === 1 && (
@@ -432,7 +601,6 @@ const Dailys = () => {
                     />
                   ))}
                 </div>
-                {/* Remove the Add Editable Card button and use the main submit button for editable card creation */}
                 <div className="card-create-actions">
                   <button className="generate-btn" onClick={handleGenerateChallenge}>
                     <FaRedo className="icon-position" /> Generate
