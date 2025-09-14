@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import { BsGraphDownArrow } from 'react-icons/bs';
 import './WeeklyProgressBar.css';
 
 // SVG Icon as a component
+
+// Restore original MultiplierIcon for Weekly Progress label
 const MultiplierIcon = () => (
   <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" className="multiplier-icon">
     <circle cx="12" cy="12" r="10" stroke="#E57373" strokeWidth="2" fill="#FFF3E0"/>
@@ -26,7 +29,8 @@ function getWeekProgress() {
   const total = nextSunday - lastSunday;
   const elapsed = now - lastSunday;
   const progress = Math.min(Math.max(elapsed / total, 0), 1);
-  const multiplier = 1 - 0.5 * progress;
+  // Exponential decay: starts at 2x, drops off harder as week progresses
+  const multiplier = 2 * Math.exp(-1.0 * progress);
   const msLeft = nextSunday - now;
   const hours = Math.floor(msLeft / MS_PER_HOUR);
   const minutes = Math.floor((msLeft % MS_PER_HOUR) / MS_PER_MIN);
@@ -50,7 +54,15 @@ const WeeklyProgressBar = () => {
     return () => clearInterval(timer);
   }, []);
 
-  const { percent, multiplier, hours, minutes, seconds } = week;
+  const { percent, multiplier, hours, minutes, seconds, progress } = week;
+
+  // Multiplier color logic
+  let multiplierColor = '#22c55e'; // green
+  if (progress >= 0.66666) {
+    multiplierColor = '#e53935'; // red
+  } else if (progress >= 0.33333) {
+    multiplierColor = '#ff9800'; // orange
+  }
 
   return (
     <div className="weekly-progress-card" role="progressbar" aria-valuenow={percent} aria-valuemin={0} aria-valuemax={100}>
@@ -61,8 +73,8 @@ const WeeklyProgressBar = () => {
           <span className="weekly-progress-percent">{percent}% complete</span>
         </div>
         <div className="weekly-progress-header-right">
-          <span className="weekly-progress-multiplier">
-            <MultiplierIcon />
+          <span className="weekly-progress-multiplier" style={{ color: multiplierColor }}>
+            <BsGraphDownArrow style={{ fontSize: '16px', verticalAlign: 'middle' }} />
             <span>{multiplier.toFixed(1)}x</span>
           </span>
           <span className="weekly-progress-timeleft">{hours}h {minutes}m {seconds}s left</span>

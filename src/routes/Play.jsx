@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { FaRedo, FaTrash } from 'react-icons/fa';
 import { FaPlus } from 'react-icons/fa';
 import WeeklyProgressBar from '../components/WeeklyProgressBar/WeeklyProgressBar';
+import ScoreBox from '../components/ScoreBox/ScoreBox';
 import { useDrag, useDrop, DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import Card from '../components/Card/Card';
@@ -49,9 +50,11 @@ const Play = () => {
   const [inProgressCards, setInProgressCards] = useState(() => 
     getStoredData(STORAGE_KEYS.inProgressCards)
   );
+  // Each completed card stores its score at completion
   const [completedCards, setCompletedCards] = useState(() => 
     getStoredData(STORAGE_KEYS.completedCards)
   );
+  const [score, setScore] = useState(0);
   const [currentPrompt, setCurrentPrompt] = useState(() => 
     localStorage.getItem(STORAGE_KEYS.currentPrompt) || ''
   );
@@ -79,6 +82,12 @@ const Play = () => {
     saveToStorage(STORAGE_KEYS.completedCards, completedCards);
     localStorage.setItem(STORAGE_KEYS.currentPrompt, currentPrompt);
   }, [historyCards, startedCards, inProgressCards, completedCards, currentPrompt]);
+
+  // Update score when completedCards changes
+  useEffect(() => {
+    const total = completedCards.reduce((acc, card) => acc + (card.score || 0), 0);
+    setScore(total);
+  }, [completedCards]);
 
   // Event handlers
   /**
@@ -117,7 +126,11 @@ const Play = () => {
     const storageKey = STORAGE_KEYS[columnName];
     
     setter(prev => {
-      const updatedColumn = prev.filter(c => c.timestamp !== card.timestamp);
+      let updatedColumn = prev.filter(c => c.timestamp !== card.timestamp);
+      // If removing from completedCards, subtract score
+      if (columnName === 'completedCards' && card.score) {
+        setScore(s => s - card.score);
+      }
       saveToStorage(storageKey, updatedColumn);
       return updatedColumn;
     });
@@ -162,13 +175,29 @@ const Play = () => {
       // Add to target column at specified position
       columnSetters[targetColumn](prev => {
         let updatedColumn;
+        let cardToAdd = { ...draggedCard };
+        // If moving to completedCards, attach score at time of completion
+        if (targetColumn === 'completedCards') {
+          // Get current multiplier from WeeklyProgressBar logic
+          const now = new Date();
+          const day = now.getDay();
+          const lastSunday = new Date(now);
+          lastSunday.setDate(now.getDate() - day);
+          lastSunday.setHours(12, 0, 0, 0);
+          if (day === 0 && now.getHours() < 12) lastSunday.setDate(lastSunday.getDate() - 7);
+          const nextSunday = new Date(lastSunday);
+          nextSunday.setDate(lastSunday.getDate() + 7);
+          const total = nextSunday - lastSunday;
+          const elapsed = now - lastSunday;
+          const progress = Math.min(Math.max(elapsed / total, 0), 1);
+          const multiplier = 2 * Math.exp(-1.0 * progress);
+          cardToAdd.score = multiplier;
+        }
         if (hoverIndex !== null && hoverIndex >= 0) {
-          // Insert at specific position
           updatedColumn = [...prev];
-          updatedColumn.splice(hoverIndex, 0, draggedCard);
+          updatedColumn.splice(hoverIndex, 0, cardToAdd);
         } else {
-          // Add to end if no position specified
-          updatedColumn = [...prev, draggedCard];
+          updatedColumn = [...prev, cardToAdd];
         }
         saveToStorage(STORAGE_KEYS[targetColumn], updatedColumn);
         return updatedColumn;
@@ -436,11 +465,11 @@ const Play = () => {
     <DndProvider backend={HTML5Backend}>
       <div className="home-container">
         <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginBottom: '8px' }}>
+          <ScoreBox score={score} />
           <button className="generate-btn" onClick={() => setIsModalOpen(true)} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <FaPlus style={{ fontSize: '1.1em' }} />
             Create card
           </button>
-          
         </div>
         <WeeklyProgressBar />
         <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
