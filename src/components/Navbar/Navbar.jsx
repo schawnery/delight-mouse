@@ -9,7 +9,6 @@ function Navbar({ children }) {
     <nav className="navbar">
       <div className="navbar-content">
         <button className="navbar-btn" onClick={() => navigate("/dailys")}>Dailys</button>
-        <button className="navbar-btn" onClick={() => navigate("/home")}>Home</button>
         <button className="navbar-btn" onClick={() => navigate("/about")}>About</button>
         {children}
       </div>
