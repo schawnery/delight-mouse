@@ -3,11 +3,11 @@
   border-radius: 12px;
   border: 1px solid #e7e7e7;
   box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-  padding: 28px 22px;
-  margin-bottom: 18px;
+  padding: 18px 16px;
+  margin-bottom: 12px;
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 0.5rem;
   position: relative;
 }
 
@@ -20,9 +20,9 @@
 }
 
 .editable-card-title {
-  font-weight: 500;
-  font-size: 1.18em;
-  color: #222;
+  font-weight: 400;
+  font-size: 1rem;
+  color: #2d2d2d;
   letter-spacing: -0.01em;
   text-align: left;
   margin-bottom: 2px;
@@ -48,8 +48,9 @@
 }
 
 .editable-card-body {
-  color: #666;
-  font-size: 1em;
+  color: #888;
+  font-size: 0.85rem;
+  font-weight: 300;
   text-align: left;
   margin-top: 2px;
   line-height: 1.6;
@@ -80,6 +81,8 @@
 
 .editable-card-timestamp {
   color: #888;
+  font-size: 0.85rem;
+  font-weight: 300;
   margin-left: auto;
   position: absolute;
   right: 0;

@@ -259,9 +259,9 @@ p {
   justify-content: space-between;
   border: 1px solid #e7e7e7;
   border-radius: 8px;
-  padding: 1rem 1.5rem;
+  padding: .75rem .75rem;
   margin-bottom: 1rem;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+  filter: drop-shadow(0 2px 8px rgba(0,0,0,0.03));
 }
 
 /* Distinct background colors for each kanban column header */
@@ -280,10 +280,10 @@ p {
 
 
 .main-window-header h2 {
-  font-size: 1.1rem;
-  font-weight: 700;
+  font-size: 1rem;
+  font-weight: 500;
   margin: 0;
-  color: #222;
+  color: #2d2d2d;
 }
 
 .main-window-header .kanban-count-pill {
