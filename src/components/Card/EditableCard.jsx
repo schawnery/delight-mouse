@@ -44,15 +44,14 @@ const EditableCard = ({ title, description, tag, timestamp, onEdit, onDelete, on
         ) : (
           <span className="editable-card-title">{title}</span>
         )}
-        {isEditing ? (
-          <div className="card-action-icons">
-            <FaSave className="card-action-icon" onClick={handleSaveClick} />
-            <CardActions onDelete={onDelete} />
-          </div>
-        ) : (
-          <CardActions onEdit={handleEditClick} onDelete={onDelete} />
-        )}
       </div>
+      {!isEditing && <CardActions onEdit={handleEditClick} onDelete={onDelete} />}
+      {isEditing && (
+        <div className="card-action-icons">
+          <FaSave className="card-action-icon" onClick={handleSaveClick} />
+          <CardActions onDelete={onDelete} />
+        </div>
+      )}
       <div className="editable-card-body">
         {isEditing ? (
           <>

@@ -35,6 +35,14 @@
   top: 0;
   right: 0;
   z-index: 2;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+.editable-card:hover .editable-card-actions,
+.editable-card-body:hover ~ .editable-card-actions {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .editable-card-icon {
