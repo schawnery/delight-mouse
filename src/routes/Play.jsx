@@ -30,8 +30,6 @@ import '../styles/Home.css';
  *   - Character limits and counters
  */
 const Play = () => {
-  const [editModalOpen, setEditModalOpen] = useState(false);
-  const [editingCard, setEditingCard] = useState(null);
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState(1);
   const [textBoxValue, setTextBoxValue] = useState("");
@@ -302,10 +300,7 @@ const Play = () => {
             description={card.description}
             tag={card.tag}
             timestamp={card.timestamp}
-            onEdit={() => {
-              setEditingCard({ ...card, column });
-              setEditModalOpen(true);
-            }}
+            // onEdit removed
             onDelete={() => {
               columnSetters[column](prev => prev.filter(c => c.timestamp !== card.timestamp));
             }}
@@ -319,65 +314,7 @@ const Play = () => {
               });
             }}
           />
-      {editModalOpen && editingCard && (
-        <Modal isOpen={editModalOpen} onClose={() => setEditModalOpen(false)}>
-          <div className="modal-header">
-            <div className="modal-title">Edit Card</div>
-            <div className="modal-desc">Edit the card details below. Changes will be saved to the selected card.</div>
-          </div>
-          <div className="modal-form-row">
-            <label className="modal-label" htmlFor="edit-title">Title *</label>
-            <input
-              id="edit-title"
-              type="text"
-              className="modal-input"
-              placeholder="Enter card title..."
-              value={editingCard.title}
-              maxLength={55}
-              required
-              onChange={e => setEditingCard({ ...editingCard, title: e.target.value })}
-            />
-            <div className={`input-counter${editingCard.title.length === 55 ? ' input-counter-limit' : ''}`}>{editingCard.title.length}/55</div>
-          </div>
-          <div className="modal-form-row">
-            <label className="modal-label" htmlFor="edit-desc">Description</label>
-            <TextBox
-              id="edit-desc"
-              value={editingCard.description}
-              onChange={e => setEditingCard({ ...editingCard, description: e.target.value })}
-              placeholder="Enter card description..."
-              rows={3}
-              maxLength={140}
-            />
-            <div className={`input-counter${editingCard.description.length === 140 ? ' input-counter-limit' : ''}`}>{editingCard.description.length}/140</div>
-          </div>
-          <div className="modal-form-row">
-            <label className="modal-label" htmlFor="edit-tag">Tag</label>
-            <input
-              id="edit-tag"
-              type="text"
-              className="modal-input"
-              placeholder="Enter tag (optional)..."
-              value={editingCard.tag || ''}
-              maxLength={30}
-              onChange={e => setEditingCard({ ...editingCard, tag: e.target.value })}
-            />
-          </div>
-          <div className="card-create-actions">
-            <button
-              className="submit-btn"
-              onClick={() => {
-                columnSetters[editingCard.column](prev => prev.map(c =>
-                  c.timestamp === editingCard.timestamp ? { ...c, ...editingCard } : c
-                ));
-                setEditModalOpen(false);
-              }}
-              disabled={editingCard.title.trim() === '' || editingCard.description.trim() === ''}
-            >Save</button>
-            <button className="cancel-btn" onClick={() => setEditModalOpen(false)}>Cancel</button>
-          </div>
-        </Modal>
-      )}
+
         </div>
       );
     }
