@@ -1,3 +1,7 @@
+.modal-submit-btn:not(:disabled) {
+  background: #181818;
+  color: #fff;
+}
 .modal-overlay {
   position: fixed;
   top: 0;
