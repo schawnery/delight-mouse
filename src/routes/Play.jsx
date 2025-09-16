@@ -1,14 +1,12 @@
-const WIP_LIMIT = 3;
-const QUEUED_LIMIT = 35;
+
+// WIP_LIMIT and QUEUED_LIMIT moved to constants/kanban.js
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaRedo, FaTrash } from 'react-icons/fa';
-import { FaPlus } from 'react-icons/fa';
+import { FaRedo, FaTrash, FaPlus } from 'react-icons/fa';
 import WeeklyProgressBar from '../components/WeeklyProgressBar/WeeklyProgressBar';
 import ScoreBox from '../components/ScoreBox/ScoreBox';
 import { useDrag, useDrop, DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import Card from '../components/Card/Card';
 import TextBox from '../components/TextBox/TextBox';
 import EditableCard from '../components/Card/EditableCard';
 import Modal from '../components/Modal/Modal';
@@ -16,6 +14,7 @@ import KanbanColumn from '../components/Kanban/KanbanColumn';
 import DropZone from '../components/Kanban/DropZone';
 import DraggableCard from '../components/Kanban/DraggableCard';
 import { STORAGE_KEYS, COLUMNS, PROMPTS } from '../constants/kanban';
+import { WIP_LIMIT, QUEUED_LIMIT } from '../constants/kanban';
 import { getStoredData, saveToStorage, generateTimestamp } from '../utils/storage';
 import '../styles/Home.css';
 

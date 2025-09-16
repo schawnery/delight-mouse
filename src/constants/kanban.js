@@ -20,3 +20,5 @@ export const PROMPTS = [
   'Do 10 push-ups.',
   'Read a page from a book.'
 ];
+export const WIP_LIMIT = 3;
+export const QUEUED_LIMIT = 35;
