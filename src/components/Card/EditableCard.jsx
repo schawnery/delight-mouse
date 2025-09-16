@@ -36,16 +36,15 @@ const EditableCard = ({ title, description, tag, timestamp, onEdit, onDelete, on
     <div className="editable-card">
       <div className="editable-card-header">
         {isEditing ? (
-          <div style={{ position: 'relative', width: '100%' }}>
+          <div className="editable-card-header-input-wrapper">
             <input
               type="text"
               value={editTitle}
               onChange={e => setEditTitle(e.target.value)}
-              className="text-box"
+              className="text-box editable-card-title-input"
               maxLength={55}
-              style={{ width: '100%' }}
             />
-            <div className="title-counter" style={{ position: 'absolute', right: 8, top: 8, fontSize: '0.85em', color: '#888' }}>
+            <div className="title-counter">
               {editTitle.length}/55
             </div>
           </div>
@@ -54,64 +53,56 @@ const EditableCard = ({ title, description, tag, timestamp, onEdit, onDelete, on
         )}
       </div>
       {!isEditing && <CardActions onEdit={handleEditClick} onDelete={onDelete} />}
-      
       <div className="editable-card-body">
         {isEditing ? (
-          <>
-            <div style={{ position: 'relative' }}>
-              <textarea
-                value={editDescription}
-                onChange={e => {
-                  if (e.target.value.length <= MAX_DESCRIPTION_LENGTH) {
-                    setEditDescription(e.target.value);
-                  }
-                }}
-                className={`text-box${editDescription.length === MAX_DESCRIPTION_LENGTH ? ' text-box-limit' : ''}`}
-                rows={2}
-                maxLength={MAX_DESCRIPTION_LENGTH}
-                style={{ width: '100%' }}
-              />
-              <div className="description-counter" style={{ position: 'absolute', right: 8, bottom: 8, fontSize: '0.85em', color: '#888' }}>
-                {editDescription.length}/{MAX_DESCRIPTION_LENGTH}
-              </div>
+          <div className="editable-card-description-wrapper">
+            <textarea
+              value={editDescription}
+              onChange={e => {
+                if (e.target.value.length <= MAX_DESCRIPTION_LENGTH) {
+                  setEditDescription(e.target.value);
+                }
+              }}
+              className={`text-box${editDescription.length === MAX_DESCRIPTION_LENGTH ? ' text-box-limit' : ''}`}
+              rows={2}
+              maxLength={MAX_DESCRIPTION_LENGTH}
+            />
+            <div className="description-counter">
+              {editDescription.length}/{MAX_DESCRIPTION_LENGTH}
             </div>
-          </>
+          </div>
         ) : (
           <span className="editable-card-description" style={{ textAlign: 'left', display: 'block' }}>{description}</span>
         )}
       </div>
       <div className="editable-card-footer">
-          {isEditing ? (
-                <input
-                  type="text"
-                  value={editTag}
-                  onChange={e => setEditTag(e.target.value)}
-                  className="text-box"
-                  style={{ width: '100%', marginTop: 0 }}
-                />
-          ) : (
-            <>
-              {tag ? <Tag text={tag} /> : null}
-              <span className="editable-card-timestamp">{timestamp}</span>
-            </>
-          )}
+        {isEditing ? (
+          <input
+            type="text"
+            value={editTag}
+            onChange={e => setEditTag(e.target.value)}
+            className="text-box editable-card-tag-input"
+          />
+        ) : (
+          <>
+            {tag ? <Tag text={tag} /> : null}
+            <span className="editable-card-timestamp">{timestamp}</span>
+          </>
+        )}
       </div>
       {isEditing && (
-        <>
-          {/* ...existing code for edit fields... */}
-          <div className="editable-card-actions-bottom" style={{ display: 'flex', flexDirection: 'column', marginTop: '16px' }}>
-            <div className="editable-card-actions-row" style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: '0.5em' }}>
-              <button className="delete-btn" onClick={() => { setIsEditing(false); if (onDelete) onDelete(); }} style={{ color: 'red', border: '1px solid #e53e3e', background: '#fff', minWidth: 80 }}>
-                Delete
-              </button>
-              <div style={{ flex: 1 }} />
-              <button className="cancel-btn" onClick={() => setIsEditing(false)} style={{ minWidth: 80 }}>Cancel</button>
-              <button className="submit-btn" onClick={handleSaveClick} style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', minWidth: 80 }}>
-                <FaSave style={{ marginRight: '4px' }} /> Save
-              </button>
-            </div>
+        <div className="editable-card-actions-bottom">
+          <div className="editable-card-actions-row">
+            <button className="delete-btn" onClick={() => { setIsEditing(false); if (onDelete) onDelete(); }}>
+              Delete
+            </button>
+            <div style={{ flex: 1 }} />
+            <button className="cancel-btn" onClick={() => setIsEditing(false)}>Cancel</button>
+            <button className="submit-btn" onClick={handleSaveClick}>
+              <FaSave style={{ marginRight: '4px' }} /> Save
+            </button>
           </div>
-        </>
+        </div>
       )}
     </div>
   );
