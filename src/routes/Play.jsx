@@ -1,4 +1,4 @@
-import dropZoneStyles from '../components/Kanban/DropZone.module.css';
+
 const WIP_LIMIT = 3;
 const TOTAL_CARD_LIMIT = 35;
 import React, { useState, useEffect, useCallback } from 'react';
@@ -19,6 +19,7 @@ import DraggableCard from '../components/Kanban/DraggableCard';
 import { STORAGE_KEYS, COLUMNS, PROMPTS } from '../constants/kanban';
 import { getStoredData, saveToStorage, generateTimestamp } from '../utils/storage';
 import '../styles/Home.css';
+import dropZoneStyles from '../components/Kanban/DropZone.module.css';
 
 
 
@@ -40,9 +41,6 @@ const Play = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   
   // Initialize state from localStorage
-  const [historyCards, setHistoryCards] = useState(() => 
-    getStoredData(STORAGE_KEYS.historyCards)
-  );
   const [startedCards, setStartedCards] = useState(() => 
     getStoredData(STORAGE_KEYS.startedCards)
   );
@@ -60,7 +58,6 @@ const Play = () => {
 
   // Column state management
   const columnStates = {
-    [COLUMNS.historyCards]: historyCards,
     [COLUMNS.startedCards]: startedCards,
     [COLUMNS.inProgressCards]: inProgressCards,
     [COLUMNS.completedCards]: completedCards
@@ -72,7 +69,6 @@ const Play = () => {
     const maxQueued = Math.max(0, TOTAL_CARD_LIMIT - inProgressCards.length - completedCards.length);
 
   const columnSetters = {
-    [COLUMNS.historyCards]: setHistoryCards,
     [COLUMNS.startedCards]: setStartedCards,
     [COLUMNS.inProgressCards]: setInProgressCards,
     [COLUMNS.completedCards]: setCompletedCards
@@ -80,12 +76,11 @@ const Play = () => {
 
   // Persist data to localStorage
   useEffect(() => {
-    saveToStorage(STORAGE_KEYS.historyCards, historyCards);
     saveToStorage(STORAGE_KEYS.startedCards, startedCards);
     saveToStorage(STORAGE_KEYS.inProgressCards, inProgressCards);
     saveToStorage(STORAGE_KEYS.completedCards, completedCards);
     localStorage.setItem(STORAGE_KEYS.currentPrompt, currentPrompt);
-  }, [historyCards, startedCards, inProgressCards, completedCards, currentPrompt]);
+  }, [startedCards, inProgressCards, completedCards, currentPrompt]);
 
   // Update score when completedCards changes
   useEffect(() => {
@@ -94,31 +89,6 @@ const Play = () => {
   }, [completedCards]);
 
   // Event handlers
-  /**
-   * Generate a random challenge prompt and add to history.
-   */
-  const handleGenerateChallenge = useCallback(() => {
-    const randomPrompt = PROMPTS[Math.floor(Math.random() * PROMPTS.length)];
-    const timestamp = generateTimestamp();
-    const newCard = { prompt: randomPrompt, timestamp, type: 'generated' };
-    
-    setCurrentPrompt(randomPrompt);
-    setHistoryCards(prev => [newCard, ...prev]);
-  }, []);
-
-  /**
-   * Submit a new entry from the text box to history.
-   */
-  const handleSubmitEntry = useCallback(() => {
-    const trimmedValue = textBoxValue.trim();
-    if (!trimmedValue) return;
-
-    const timestamp = generateTimestamp();
-    const newCard = { prompt: trimmedValue, timestamp, type: 'textbox' };
-    
-    setHistoryCards(prev => [newCard, ...prev]);
-    setTextBoxValue("");
-  }, [textBoxValue]);
 
   /**
    * Delete a card from a specified column.
@@ -367,7 +337,6 @@ const Play = () => {
     if (columnKey === 'startedCards') return 'main-window-header queued';
     if (columnKey === 'inProgressCards') return 'main-window-header inprogress';
     if (columnKey === 'completedCards') return 'main-window-header completed';
-    if (columnKey === 'historyCards') return 'main-window-header history';
     return 'main-window-header';
   };
 
@@ -394,7 +363,7 @@ const Play = () => {
                   : cards.length}
             </span>
           </div>
-          <div className={columnKey === 'historyCards' ? 'cards-wrapper' : 'right-cards-wrapper'}>
+          <div className='right-cards-wrapper'>
             {cards.map((card, index) => (
               <DraggableCard 
                 key={`${card.timestamp}-${index}`} 
