@@ -1,5 +1,5 @@
 const WIP_LIMIT = 3;
-const QUEUED_LIMIT = 35;
+const TOTAL_CARD_LIMIT = 35;
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaRedo, FaTrash } from 'react-icons/fa';
@@ -64,6 +64,11 @@ const Play = () => {
     [COLUMNS.inProgressCards]: inProgressCards,
     [COLUMNS.completedCards]: completedCards
   };
+  
+    // Total cards on board (excluding history)
+    const totalActiveCards = startedCards.length + inProgressCards.length + completedCards.length;
+    // Max allowed in Queued (startedCards) is TOTAL_CARD_LIMIT minus inProgress and completed
+    const maxQueued = Math.max(0, TOTAL_CARD_LIMIT - inProgressCards.length - completedCards.length);
 
   const columnSetters = {
     [COLUMNS.historyCards]: setHistoryCards,
@@ -379,7 +384,7 @@ const Play = () => {
               {columnKey === 'inProgressCards'
                 ? `${cards.length}/${WIP_LIMIT}`
                 : columnKey === 'startedCards'
-                  ? `${cards.length}/${QUEUED_LIMIT}`
+                  ? `${cards.length}/${typeof maxQueued === 'number' ? maxQueued : TOTAL_CARD_LIMIT}`
                   : cards.length}
             </span>
           </div>
@@ -421,7 +426,8 @@ const Play = () => {
               e.preventDefault();
               if (
                 cardTitle.trim() &&
-                startedCards.length < 35
+                  totalActiveCards < TOTAL_CARD_LIMIT &&
+                  startedCards.length < maxQueued
               ) {
                 const timestamp = new Date().toLocaleString();
                 setStartedCards([
@@ -442,10 +448,7 @@ const Play = () => {
             }}
           >
             <div className="modal-form-row">
-              <label className="modal-label" htmlFor="modal-title">Title *</label>
               <input
-                id="modal-title"
-                type="text"
                 className="modal-input"
                 placeholder="Enter card title..."
                 value={cardTitle}
@@ -462,6 +465,7 @@ const Play = () => {
             <div className="modal-form-row">
               <label className="modal-label" htmlFor="modal-desc">Description</label>
               <TextBox
+            maxQueued={maxQueued}
                 id="modal-desc"
                 value={cardDescription}
                 onChange={e => {
