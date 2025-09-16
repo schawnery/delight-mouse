@@ -18,6 +18,7 @@ import DraggableCard from '../components/Kanban/DraggableCard';
 import { STORAGE_KEYS, COLUMNS, PROMPTS } from '../constants/kanban';
 import { getStoredData, saveToStorage, generateTimestamp } from '../utils/storage';
 import '../styles/Home.css';
+import dropZoneStyles from '../styles/DropZone.module.css';
 
 
 
@@ -151,13 +152,19 @@ const Play = () => {
       columnStates[col].some(card => card.timestamp === draggedCard.timestamp)
     );
 
-    // Enforce WIP limits for inProgressCards and startedCards (Queued)
-    if (
-      (targetColumn === 'inProgressCards' && columnStates['inProgressCards'].length >= WIP_LIMIT) ||
-      (targetColumn === 'startedCards' && columnStates['startedCards'].length >= QUEUED_LIMIT)
-    ) {
+    // Enforce WIP limit for inProgressCards
+    if (targetColumn === 'inProgressCards' && columnStates['inProgressCards'].length >= WIP_LIMIT) {
       // Do nothing: card stays in original column
       return;
+    }
+    // For startedCards (Queued), allow moving cards back as long as totalActiveCards < TOTAL_CARD_LIMIT
+    if (targetColumn === 'startedCards') {
+      // If the card is already in startedCards, allow reordering
+      const isAlreadyInQueued = columnStates['startedCards'].some(c => c.timestamp === draggedCard.timestamp);
+      if (!isAlreadyInQueued && totalActiveCards >= TOTAL_CARD_LIMIT) {
+        // Do nothing: card stays in original column
+        return;
+      }
     }
 
     // If moving to a different column
@@ -239,16 +246,15 @@ const Play = () => {
       }),
     }));
 
+    // Use CSS modules for drop zone styling
+    const dropZoneClass = isOver
+      ? `${dropZoneStyles['drop-zone']} ${dropZoneStyles['drop-zone-active']}`
+      : dropZoneStyles['drop-zone'];
+
     return (
       <div
         ref={drop}
-        style={{
-          flex: 1,
-          width: '100%',
-          backgroundColor: isOver ? '#9deb9dff' : 'transparent',
-          transition: 'background-color 0.3s ease',
-          minHeight: '200px', // Ensure there's always a drop area
-        }}
+        className={dropZoneClass}
       >
         {children}
       </div>
@@ -371,7 +377,7 @@ const Play = () => {
         onDrop={(card, position) => {
           // Prevent dropping if WIP limit reached for inProgressCards or Queued
           if ((columnKey === 'inProgressCards' && cards.length >= WIP_LIMIT) ||
-              (columnKey === 'startedCards' && cards.length >= QUEUED_LIMIT)) return;
+              (columnKey === 'startedCards' && cards.length >= maxQueued)) return;
           handleCardMove(card, columnKey, position);
         }}
         columnKey={columnKey}
