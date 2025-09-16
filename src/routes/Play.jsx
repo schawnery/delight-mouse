@@ -1,3 +1,4 @@
+import dropZoneStyles from '../components/Kanban/DropZone.module.css';
 const WIP_LIMIT = 3;
 const TOTAL_CARD_LIMIT = 35;
 import React, { useState, useEffect, useCallback } from 'react';
@@ -18,7 +19,6 @@ import DraggableCard from '../components/Kanban/DraggableCard';
 import { STORAGE_KEYS, COLUMNS, PROMPTS } from '../constants/kanban';
 import { getStoredData, saveToStorage, generateTimestamp } from '../utils/storage';
 import '../styles/Home.css';
-import dropZoneStyles from '../styles/DropZone.module.css';
 
 
 
