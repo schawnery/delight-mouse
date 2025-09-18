@@ -63,7 +63,7 @@ const EditableCard = ({ title, description, tag, timestamp, onEdit, onDelete, on
                 }
               }}
               className={`text-box${editDescription.length === MAX_DESCRIPTION_LENGTH ? ' text-box-limit' : ''}`}
-              rows={2}
+              rows={3}
               maxLength={MAX_DESCRIPTION_LENGTH}
             />
             <div className="description-counter">

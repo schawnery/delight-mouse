@@ -1,8 +1,8 @@
 import React from 'react';
-import './Tag.css';
+import styles from './Tag.module.css';
 
 const Tag = ({ text }) => (
-  <span className="tag">{text}</span>
+  <span className={styles.tag}>{text}</span>
 );
 
 export default Tag;

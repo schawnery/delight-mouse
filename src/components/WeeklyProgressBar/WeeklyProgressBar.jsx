@@ -1,16 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { BsGraphDownArrow } from 'react-icons/bs';
-import './WeeklyProgressBar.css';
-
-// SVG Icon as a component
-
-// Restore original MultiplierIcon for Weekly Progress label
-const MultiplierIcon = () => (
-  <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" className="multiplier-icon">
-    <circle cx="12" cy="12" r="10" stroke="#E57373" strokeWidth="2" fill="#FFF3E0"/>
-    <path d="M12 7v5l3 3" stroke="#E57373" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-  </svg>
-);
+import { FaRegClock } from 'react-icons/fa';
+import styles from './WeeklyProgressBar.module.css';
 
 const MS_PER_HOUR = 3600000;
 const MS_PER_MIN = 60000;
@@ -65,25 +56,25 @@ const WeeklyProgressBar = () => {
   }
 
   return (
-    <div className="weekly-progress-card" role="progressbar" aria-valuenow={percent} aria-valuemin={0} aria-valuemax={100}>
-      <div className="weekly-progress-header">
-        <div className="weekly-progress-header-left">
-          <MultiplierIcon />
-          <span className="weekly-progress-title">Weekly Progress</span>
-          <span className="weekly-progress-percent">{percent}% complete</span>
+    <div className={styles['weekly-progress-card']} role="progressbar" aria-valuenow={percent} aria-valuemin={0} aria-valuemax={100}>
+      <div className={styles['weekly-progress-header']}>
+        <div className={styles['weekly-progress-header-left']}>
+          <FaRegClock style={{ color: '#2d2d2d', fontSize: '18px', verticalAlign: 'middle' }} />
+          <span className={styles['weekly-progress-title']}>Weekly Progress</span>
+          <span className={styles['weekly-progress-percent']}>{percent}% complete</span>
         </div>
-        <div className="weekly-progress-header-right">
-          <span className="weekly-progress-multiplier" style={{ color: multiplierColor }}>
+  <div className={styles['weekly-progress-header-right']}>
+          <span className={styles['weekly-progress-multiplier']} style={{ color: multiplierColor }}>
             <BsGraphDownArrow style={{ fontSize: '16px', verticalAlign: 'middle' }} />
             <span>{multiplier.toFixed(1)}x</span>
           </span>
-          <span className="weekly-progress-timeleft">{hours}h {minutes}m {seconds}s left</span>
+          <span className={styles['weekly-progress-timeleft']}>{hours}h {minutes}m {seconds}s left</span>
         </div>
       </div>
-      <div className="weekly-progress-bar-bg">
-        <div className="weekly-progress-bar-fill" style={{width: `${percent}%`}} />
+      <div className={styles['weekly-progress-bar-bg']}>
+        <div className={styles['weekly-progress-bar-fill']} style={{width: `${percent}%`}} />
       </div>
-      <div className="weekly-progress-desc">
+  <div className={styles['weekly-progress-desc']}>
         Score multiplier decreases as the week progresses (Resets weekly on Sunday afternoons). Complete tasks early and chained together for maximum points!
       </div>
     </div>

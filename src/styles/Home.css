@@ -54,7 +54,7 @@
 
 .home-container {
   text-align: center;
-  padding: 20px;
+  padding: 2rem;
   max-width: calc(100vw - 4rem);
   width: 100%;
   margin: 0 auto;
@@ -92,7 +92,7 @@ header {
 }
 
 h1 {
-  font-size: 1.8rem; /* Adjusted h1 title size */
+  font-size: 1rem; /* Adjusted h1 title size */
   color: #333;
 }
 
@@ -113,43 +113,6 @@ p {
   display: flex;
   justify-content: center;
   margin: 20px 0;
-}
-
-.tabs-wrapper {
-  width: 100%;
-  background-color: #ffffff; /* pure white */
-  border: 1px solid #ddd;
-  padding: 12px 8px; /* Updated padding: top/bottom 8px, left/right 16px */
-  border-radius: 9999px;
-}
-
-.tabs {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-}
-
-.tab-button {
-  flex: 1; /* Ensure both buttons take up equal space */
-  margin: 0 5px;
-  padding: 10px 20px;
-  font-size: 1rem;
-  cursor: pointer;
-  border: 1px solid #ccc;
-  border-radius: 999px;
-  background-color: #f9f9f9;
-  color: #333;
-}
-
-.tab-button.active {
-  background-color: #000000;
-  color: white;
-  border-color: #141414;
-}
-
-.tab-button:hover {
-  background-color: #e0e0e0;
-  color:#333;
 }
 
 .main-window {

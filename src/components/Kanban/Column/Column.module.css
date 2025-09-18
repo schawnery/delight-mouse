@@ -1,0 +1,23 @@
+.column {
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  padding: 16px 12px 12px 12px;
+  width: 100%;
+}
+.column-header {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #222;
+  margin-bottom: 12px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid #f3f4f6;
+  text-align: left;
+}
+.column-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}

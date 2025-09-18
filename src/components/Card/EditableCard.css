@@ -41,7 +41,7 @@
 }
 .editable-card:hover .editable-card-actions,
 .editable-card-body:hover ~ .editable-card-actions {
-  opacity: 1;
+  opacity: 0.5;
   pointer-events: auto;
 }
 

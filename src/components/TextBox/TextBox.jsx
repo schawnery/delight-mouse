@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import "./TextBox.css";
+import styles from "./TextBox.module.css";
 
 /**
  * TextBox - A multi-line text entry component.
