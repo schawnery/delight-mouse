@@ -3,8 +3,8 @@ import React, { useMemo } from 'react';
 import './Footer.css';
 
 const MAJOR = 1;
-const MINOR = 3;
-const ATOM = 10;
+const MINOR = 2;
+const ATOM = 1;
 
 const Footer = () => {
   const version = useMemo(() => {

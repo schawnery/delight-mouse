@@ -1,16 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './Column.module.css';
+import Header from './Header/Header';
 
 const Column = ({ header, children }) => (
-	<div className={styles.column}>
-		<div className={styles['column-header']}>
-			{header}
+		<div className={styles.column}>
+			<Header title={header} />
+			<div className={styles['column-cards']}>
+				{children}
+			</div>
 		</div>
-		<div className={styles['column-cards']}>
-			{children}
-		</div>
-	</div>
 );
 
 Column.propTypes = {
