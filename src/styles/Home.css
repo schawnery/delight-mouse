@@ -7,22 +7,6 @@
   gap: 1rem;
 }
 
-/* Card creation fields layout */
-.card-create-fields {
-  display: flex;
-  flex-direction: column;
-  gap: 1em;
-  align-items: center;
-  margin-bottom: 1em;
-}
-
-/* Card creation actions layout */
-.card-create-actions {
-  margin-top: 1em;
-  display: flex;
-  gap: 1em;
-  justify-content: center;
-}
 /* Input with counter bottom right */
 .input-with-counter {
   position: relative;
@@ -87,9 +71,6 @@
   }
 }
 
-header {
-  margin-bottom: 20px;
-}
 
 h1 {
   font-size: 1rem; /* Adjusted h1 title size */
