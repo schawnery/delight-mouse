@@ -1,7 +1,9 @@
+
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styles from './DragCard.module.css';
 import { useDraggable, useDroppable } from '@dnd-kit/core';
+import CardActions from './card-CTA/CardActions';
 
 const DragCard = ({ id, title, description, initialTag = '', value = 0 }) => {
   const [userTag, setUserTag] = useState(initialTag);
@@ -18,7 +20,18 @@ const DragCard = ({ id, title, description, initialTag = '', value = 0 }) => {
   };
 
   return (
-    <div ref={setRefs} style={style} {...attributes} {...listeners} className={styles["drag-card"]}>
+    <div
+      ref={setRefs}
+      style={{ ...style, position: 'relative' }}
+      {...attributes}
+      {...listeners}
+      className={`${styles["drag-card"]} editable-card`}
+    >
+      {/* Card Actions (hidden by default, show on hover) */}
+      <CardActions
+        onEdit={() => {}}
+        onDelete={() => {}}
+      />
       <div className={styles["drag-card-header"]}>
         <h3>{title}</h3>
       </div>

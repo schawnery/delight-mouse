@@ -27,6 +27,11 @@ import CardCreateForm from '../components/Card/CardCreateForm';
  *   - Challenge prompt generation
  *   - Character limits and counters
  */
+
+// Column/card limits
+const QUEUED_LIMIT = 35;
+const IN_PROGRESS_WIP = 3;
+
 const defaultColumns = {
   'column-1': { id: 'Queued', title: 'Queued', cardIds: ['card-1'] },
   'column-2': { id: 'In Progress', title: 'In Progress', cardIds: ['card-2'] },
@@ -122,7 +127,27 @@ const Play = () => {
     });
   }, [columns]);
 
-  const queuedLimitReached = columns['Queued'] && columns['Queued'].cardIds.length >= 35;
+
+  // Precompute total cards for performance
+  const totalCards = Object.values(columns).reduce((sum, col) => sum + col.cardIds.length, 0);
+  // Helper for tag text
+  const getColumnTagText = (colId, column) => {
+    if (colId === 'Completed') {
+      return `${column.cardIds.length}/${totalCards}`;
+    }
+    if (colId === 'In Progress') {
+      return `${column.cardIds.length}/${IN_PROGRESS_WIP}`;
+    }
+    if (colId === 'Queued') {
+      // Remaining slots for Queued = QUEUED_LIMIT - (totalCards - column.cardIds.length)
+      const remainingQueuedSlots = Math.max(QUEUED_LIMIT - (totalCards - column.cardIds.length), 0);
+      return `${column.cardIds.length}/${remainingQueuedSlots}`;
+    }
+    return column.cardIds.length;
+  };
+
+  const queuedLimitReached = columns['Queued'] && columns['Queued'].cardIds.length >= QUEUED_LIMIT;
+
   return (
     <div className="home-container">
       <Button onClick={handleOpenModal} disabled={queuedLimitReached}>Create Card</Button>
@@ -130,7 +155,7 @@ const Play = () => {
       <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
         {queuedLimitReached ? (
           <div style={{ padding: 24, textAlign: 'center', color: 'red' }}>
-            Queued column is full (35 card limit).
+            Queued column is full ({QUEUED_LIMIT} card limit).
           </div>
         ) : (
           <CardCreateForm
@@ -144,18 +169,7 @@ const Play = () => {
         {['Queued', 'In Progress', 'Completed'].map((colId) => {
           const column = columns[colId];
           if (!column) return null;
-          let tagText = column.cardIds.length;
-          if (colId === 'Completed') {
-            const totalCards = Object.values(columns).reduce((sum, col) => sum + col.cardIds.length, 0);
-            tagText = `${column.cardIds.length}/${totalCards}`;
-          } else if (colId === 'In Progress') {
-            tagText = `${column.cardIds.length}/3`;
-          } else if (colId === 'Queued') {
-            // Show current/remaining creation limit for Queued
-            const totalCards = Object.values(columns).reduce((sum, col) => sum + col.cardIds.length, 0);
-            const maxQueued = Math.max(35 - (totalCards - column.cardIds.length), 0);
-            tagText = `${column.cardIds.length}/${maxQueued}`;
-          }
+          const tagText = getColumnTagText(colId, column);
           return (
             <Column
               key={column.id}
@@ -167,7 +181,7 @@ const Play = () => {
               }
               columnId={column.id}
               cardIds={column.cardIds}
-              wipLimitReached={colId === 'In Progress' && column.cardIds.length >= 3}
+              wipLimitReached={colId === 'In Progress' && column.cardIds.length >= IN_PROGRESS_WIP}
             >
               {column.cardIds.map((cardId) => {
                 const card = cards[cardId];
