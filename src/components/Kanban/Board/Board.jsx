@@ -19,6 +19,12 @@ const Board = ({ children, columns, setColumns }) => {
 		const destCol = findColumnByCardId(columns, overId) || columns[overId];
 		if (!sourceCol) return;
 
+		// Enforce WIP limit for In Progress column
+		if (destCol && destCol.id === 'In Progress' && destCol.cardIds.length >= 3 && sourceCol.id !== destCol.id) {
+			// Prevent moving card into In Progress if limit reached
+			return;
+		}
+
 		// If dropped in same column, reorder
 		if (sourceCol && destCol && sourceCol.id === destCol.id) {
 			const oldIdx = sourceCol.cardIds.indexOf(activeId);
