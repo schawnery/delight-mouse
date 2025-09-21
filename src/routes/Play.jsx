@@ -21,32 +21,46 @@ import DragCard from '../components/Card/DragCard/DragCard';
  *   - Challenge prompt generation
  *   - Character limits and counters
  */
+const initialColumns = {
+  'column-1': { id: 'column-1', title: 'Test Column', cardIds: ['card-1'] },
+  'column-2': { id: 'column-2', title: 'Test Column 2', cardIds: ['card-2'] },
+  'column-3': { id: 'column-3', title: 'Test Column 3', cardIds: ['card-3'] }
+};
+const initialCards = {
+  'card-1': { id: 'card-1', title: 'Test Card', description: 'This is a test card in the new column.', value: 1 },
+  'card-2': { id: 'card-2', title: 'Test Card', description: 'This is a test card in the new column.', value: 2 },
+  'card-3': { id: 'card-3', title: 'Test Card', description: 'This is a test card in the new column.', value: 3 }
+};
+
 const Play = () => {
+  const [columns, setColumns] = useState(initialColumns);
+  const [cards, setCards] = useState(initialCards);
+
   return (
     <div className="home-container">
       <WeeklyProgressBar />
-      <Board>
-        <Column header="Test Column">
-          <DragCard 
-            title="Test Card" 
-            description="This is a test card in the new column." 
-            value={42} 
-          />
-        </Column>
-        <Column header="Test Column 2">
-          <DragCard 
-            title="Test Card" 
-            description="This is a test card in the new column." 
-            value={42} 
-          />
-        </Column>
-        <Column header="Test Column 3">
-          <DragCard 
-            title="Test Card" 
-            description="This is a test card in the new column." 
-            value={42} 
-          />
-        </Column>
+      <Board columns={columns} setColumns={setColumns}>
+        {Object.values(columns).map((column) => (
+          <Column
+            key={column.id}
+            header={column.title}
+            columnId={column.id}
+            cardIds={column.cardIds}
+          >
+            {column.cardIds.map((cardId) => {
+              const card = cards[cardId];
+              return card ? (
+                <DragCard
+                  key={card.id}
+                  id={card.id}
+                  title={card.title}
+                  description={card.description}
+                  value={card.value}
+                />
+              ) : null;
+            })}
+          </Column>
+        ))}
       </Board>
     </div>
   );
