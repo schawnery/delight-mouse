@@ -9,7 +9,9 @@ import TextBox from '../components/TextBox/TextBox';
 import Column from '../components/Kanban/Column/Column';
 import Board from '../components/Kanban/Board/Board';
 import '../styles/Home.css';
+
 import DragCard from '../components/Card/DragCard/DragCard';
+import { getAllColumns, getAllCards, putColumn } from '../utils/kanbanDb';
 
 
 
@@ -21,20 +23,57 @@ import DragCard from '../components/Card/DragCard/DragCard';
  *   - Challenge prompt generation
  *   - Character limits and counters
  */
-const initialColumns = {
+const defaultColumns = {
   'column-1': { id: 'column-1', title: 'Test Column', cardIds: ['card-1'] },
   'column-2': { id: 'column-2', title: 'Test Column 2', cardIds: ['card-2'] },
   'column-3': { id: 'column-3', title: 'Test Column 3', cardIds: ['card-3'] }
 };
-const initialCards = {
+const defaultCards = {
   'card-1': { id: 'card-1', title: 'Test Card', description: 'This is a test card in the new column.', value: 1 },
   'card-2': { id: 'card-2', title: 'Test Card', description: 'This is a test card in the new column.', value: 2 },
   'card-3': { id: 'card-3', title: 'Test Card', description: 'This is a test card in the new column.', value: 3 }
 };
 
+
 const Play = () => {
-  const [columns, setColumns] = useState(initialColumns);
-  const [cards, setCards] = useState(initialCards);
+  const [columns, setColumns] = useState({});
+  const [cards, setCards] = useState({});
+
+  // Load from IndexedDB on mount, or set defaults if empty
+  useEffect(() => {
+    async function loadFromDb() {
+      const dbColumns = await getAllColumns();
+      const dbCards = await getAllCards();
+      if (dbColumns.length > 0 && dbCards.length > 0) {
+        // Convert arrays to objects keyed by id, ensure cardIds is always an array
+        const columnsObj = {};
+        dbColumns.forEach(col => {
+          columnsObj[col.id] = {
+            ...col,
+            cardIds: Array.isArray(col.cardIds) ? col.cardIds : [],
+          };
+        });
+        const cardsObj = {};
+        dbCards.forEach(card => { cardsObj[card.id] = card; });
+        setColumns(columnsObj);
+        setCards(cardsObj);
+      } else {
+        // If IndexedDB is empty, set defaults and persist them
+        setColumns(defaultColumns);
+        setCards(defaultCards);
+        Object.values(defaultColumns).forEach(col => putColumn(col));
+        // You may want to persist defaultCards as well if you add putCard
+      }
+    }
+    loadFromDb();
+  }, []);
+
+  // Persist columns to IndexedDB whenever columns state changes
+  useEffect(() => {
+    Object.values(columns).forEach(col => {
+      putColumn(col);
+    });
+  }, [columns]);
 
   return (
     <div className="home-container">
