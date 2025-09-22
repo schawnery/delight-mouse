@@ -154,7 +154,7 @@ const Play = () => {
     });
   }, [columns]);
 
-
+  
   // Precompute total cards for performance
   // this section handles tag/indicator card count per column
   const totalCards = Object.values(columns).reduce((sum, col) => sum + col.cardIds.length, 0);
@@ -173,7 +173,6 @@ const Play = () => {
     }
     return column.cardIds.length;
   };
-
   const queuedLimitReached = columns['Queued'] && columns['Queued'].cardIds.length >= QUEUED_LIMIT;
 
   return (
@@ -201,13 +200,9 @@ const Play = () => {
           return (
             <Column
               key={column.id}
-              header={
-                <>
-                  {column.title}
-                  <Tag text={tagText} />
-                </>
-              }
-              columnId={column.id}
+              header={column.title}
+              tagText={tagText}
+              columnId={colId}
               cardIds={column.cardIds}
               wipLimitReached={colId === 'In Progress' && column.cardIds.length >= IN_PROGRESS_WIP}
             >

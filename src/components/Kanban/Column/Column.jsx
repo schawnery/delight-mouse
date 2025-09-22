@@ -5,14 +5,14 @@ import PropTypes from 'prop-types';
 import styles from './Column.module.css';
 import Header from './Header/Header';
 
-const Column = ({ header, children, columnId, cardIds }) => {
+const Column = ({ header, tagText, columnId, cardIds, children }) => {
 	const { isOver, setNodeRef } = useDroppable({ id: columnId });
 	const columnStyle = {
 		...((isOver) ? { background: '#e0ffe0', transition: 'background 0.2s' } : {}),
 	};
 	return (
 		<div className={styles.column} ref={setNodeRef} style={columnStyle}>
-			<Header title={header} />
+			<Header title={header} tagText={tagText} colId={columnId} />
 			<SortableContext id={columnId} items={cardIds} strategy={verticalListSortingStrategy}>
 				<div className={styles['column-cards']}>
 					{children}
@@ -23,7 +23,8 @@ const Column = ({ header, children, columnId, cardIds }) => {
 };
 
 Column.propTypes = {
-	header: PropTypes.node.isRequired,
+	header: PropTypes.string.isRequired,
+	tagText: PropTypes.node,
 	children: PropTypes.node,
 	columnId: PropTypes.string.isRequired,
 	cardIds: PropTypes.arrayOf(PropTypes.string).isRequired

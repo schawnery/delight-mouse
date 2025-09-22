@@ -2,19 +2,20 @@
 .text-box {
   width: 100%;
   padding: 0.75em 1em;
-  font-size: 1rem;
+  font-size: 0.75rem;
   font-family: inherit;
   border: 1px solid var(--color-grey-30);
   border-radius: 0.5em;
-  background-color: #ececec;
-  color: #272727;
+  background-color: #eeeded;
+  color: #414141;
   resize: vertical;
   box-sizing: border-box;
   transition: border-color 0.2s, background 0.2s;
 }
 .text-box:focus {
-  border: 10px solid var(--color-grey-30);
   background: #ececec;
+  
+  border: 1px solid var(--color-grey-30);
 }
 
 .textbox-label {

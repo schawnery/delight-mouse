@@ -2,22 +2,23 @@
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	padding: 1rem;
-	border-bottom: 1px solid #f3f4f6;
-    border: 1px solid #ececec;
-    border-radius: 0.5rem;
+	padding: 0.7rem 1.1rem;
+	border: 1px solid #ececec;
+	border-radius: 0.5rem;
 }
 .title {
-	font-size: 1.0rem;
+	font-size: 0.8rem;
 	font-weight: 400;
 	color: #333;
+	text-align: left;
+	align-items: center;
 }
 .tag {
 	margin-left: 12px;
-	font-size: 0.95rem;
-	font-weight: 400;
-	color: #6366f1;
+	font-size: 0.7rem;
+	font-weight: 500;
+	color: #383838;
 	background: #f3f4f6;
 	border-radius: 6px;
-	padding: 2px 10px;
+	padding: 4px 8px;	
 }
