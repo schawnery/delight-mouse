@@ -30,7 +30,7 @@ import CreateCardModal from '../components/Modal/CreateCardModal';
  */
 
 // Column/card limits
-const QUEUED_LIMIT = 35;
+const QUEUED_LIMIT = 21;
 const IN_PROGRESS_WIP = 3;
 
 const defaultColumns = {
@@ -39,9 +39,9 @@ const defaultColumns = {
   'column-3': { id: 'Completed', title: 'Completed', cardIds: ['card-3'] }
 };
 const defaultCards = {
-  'card-1': { id: 'card-1', title: 'Test Card', description: 'This is a test card in the new column.', value: 1 },
-  'card-2': { id: 'card-2', title: 'Test Card', description: 'This is a test card in the new column.', value: 2 },
-  'card-3': { id: 'card-3', title: 'Test Card', description: 'This is a test card in the new column.', value: 3 }
+  'card-1': { id: 'card-1', title: 'Glyph-1 Tutorial', description: 'Gamify your life with a rogue-like kanban board', value: 1 },
+  'card-2': { id: 'card-2', title: 'Create a weekly deck', description: 'Add up to 21 cards per week and work on 3 cards at a time', value: 2 },
+  'card-3': { id: 'card-3', title: 'Speed + Chained completes', description: 'The more you complete together, the more points you earn', value: 3 }
 };
 
 
@@ -77,8 +77,8 @@ const Play = () => {
   // Load from IndexedDB on mount, or set defaults if empty
   useEffect(() => {
     async function loadFromDb() {
-      const dbColumns = await getAllColumns();
-      const dbCards = await getAllCards();
+      let dbColumns = await getAllColumns();
+      let dbCards = await getAllCards();
       if (dbColumns.length > 0 && dbCards.length > 0) {
         // Convert arrays to objects keyed by id, ensure cardIds is always an array
         const columnsObj = {};
@@ -93,11 +93,25 @@ const Play = () => {
         setColumns(columnsObj);
         setCards(cardsObj);
       } else {
-        // If IndexedDB is empty, set defaults and persist them
-        setColumns(defaultColumns);
-        setCards(defaultCards);
-        Object.values(defaultColumns).forEach(col => putColumn(col));
-        Object.values(defaultCards).forEach(card => putCard(card));
+        // If IndexedDB is empty, write defaults, then reload from DB and set state
+        await Promise.all([
+          ...Object.values(defaultColumns).map(col => putColumn(col)),
+          ...Object.values(defaultCards).map(card => putCard(card)),
+        ]);
+        // Now re-fetch from DB to ensure state matches DB
+        dbColumns = await getAllColumns();
+        dbCards = await getAllCards();
+        const columnsObj = {};
+        dbColumns.forEach(col => {
+          columnsObj[col.id] = {
+            ...col,
+            cardIds: Array.isArray(col.cardIds) ? col.cardIds : [],
+          };
+        });
+        const cardsObj = {};
+        dbCards.forEach(card => { cardsObj[card.id] = card; });
+        setColumns(columnsObj);
+        setCards(cardsObj);
       }
     }
     loadFromDb();
