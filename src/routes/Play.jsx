@@ -1,5 +1,5 @@
 //load constants and depdendencies
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 // import { useNavigate } from 'react-router-dom';
 
 // load components
@@ -13,11 +13,10 @@ import '../styles/Home.css';
 
 import DragCard from '../components/Card/DragCard/DragCard';
 import EditCardModal from '../components/Modal/EditCardModal';
-import { getAllColumns, getAllCards, putColumn, putCard } from '../utils/kanbanDb';
+import { useKanbanBoard } from '../hooks/useKanbanBoard';
 import Button from '../components/Button/Button';
 import Modal from '../components/Modal/Modal';
 import CreateCardModal from '../components/Modal/CreateCardModal';
-
 
 
 /**
@@ -44,13 +43,11 @@ const defaultCards = {
   'card-3': { id: 'card-3', title: 'Speed + Chained completes', description: 'The more you complete together, the more points you earn', value: 3 }
 };
 
-
-
 const Play = () => {
-  const [columns, setColumns] = useState({});
-  const [cards, setCards] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editCardId, setEditCardId] = useState(null);
+  const { columns, setColumns, cards, setCards, loading } = useKanbanBoard(defaultColumns, defaultCards);
+
   // Edit card handlers
   const handleEditCard = (cardId) => setEditCardId(cardId);
   const handleCloseEditModal = () => setEditCardId(null);
@@ -73,63 +70,6 @@ const Play = () => {
     });
     setEditCardId(null);
   };
-
-  // Load from IndexedDB on mount, or set defaults if empty
-  useEffect(() => {
-    async function loadFromDb() {
-      let dbColumns = await getAllColumns();
-      let dbCards = await getAllCards();
-      if (dbColumns.length > 0 && dbCards.length > 0) {
-        // Convert arrays to objects keyed by id, ensure cardIds is always an array
-        const columnsObj = {};
-        dbColumns.forEach(col => {
-          columnsObj[col.id] = {
-            ...col,
-            cardIds: Array.isArray(col.cardIds) ? col.cardIds : [],
-          };
-        });
-        const cardsObj = {};
-        dbCards.forEach(card => { cardsObj[card.id] = card; });
-        setColumns(columnsObj);
-        setCards(cardsObj);
-      } else {
-        // If IndexedDB is empty, write defaults, then reload from DB and set state
-        await Promise.all([
-          ...Object.values(defaultColumns).map(col => putColumn(col)),
-          ...Object.values(defaultCards).map(card => putCard(card)),
-        ]);
-        // Now re-fetch from DB to ensure state matches DB
-        dbColumns = await getAllColumns();
-        dbCards = await getAllCards();
-        const columnsObj = {};
-        dbColumns.forEach(col => {
-          columnsObj[col.id] = {
-            ...col,
-            cardIds: Array.isArray(col.cardIds) ? col.cardIds : [],
-          };
-        });
-        const cardsObj = {};
-        dbCards.forEach(card => { cardsObj[card.id] = card; });
-        setColumns(columnsObj);
-        setCards(cardsObj);
-      }
-    }
-    loadFromDb();
-  }, []);
-
-  // Persist columns to IndexedDB whenever columns state changes
-  useEffect(() => {
-    Object.values(columns).forEach(col => {
-      putColumn(col);
-    });
-  }, [columns]);
-
-  // Persist cards to IndexedDB whenever cards state changes
-  useEffect(() => {
-    Object.values(cards).forEach(card => {
-      putCard(card);
-    });
-  }, [cards]);
 
   // Handler to create a new card
   const handleCreateCard = ({ title, description, tag, priority }) => {
@@ -161,14 +101,6 @@ const Play = () => {
   const handleOpenModal = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
 
-  // Persist columns to IndexedDB whenever columns state changes
-  useEffect(() => {
-    Object.values(columns).forEach(col => {
-      putColumn(col);
-    });
-  }, [columns]);
-
-  
   // Precompute total cards for performance
   // this section handles tag/indicator card count per column
   const totalCards = Object.values(columns).reduce((sum, col) => sum + col.cardIds.length, 0);
@@ -189,6 +121,9 @@ const Play = () => {
   };
   const queuedLimitReached = columns['Queued'] && columns['Queued'].cardIds.length >= QUEUED_LIMIT;
 
+  if (loading) {
+    return <div style={{ padding: 32, textAlign: 'center' }}>Loading board...</div>;
+  }
   return (
     <div className="home-container">
       <Button onClick={handleOpenModal} disabled={queuedLimitReached}>Create Card</Button>
