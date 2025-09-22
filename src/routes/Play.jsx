@@ -12,10 +12,11 @@ import Board from '../components/Kanban/Board/Board';
 import '../styles/Home.css';
 
 import DragCard from '../components/Card/DragCard/DragCard';
+import EditCardModal from '../components/Modal/EditCardModal';
 import { getAllColumns, getAllCards, putColumn, putCard } from '../utils/kanbanDb';
 import Button from '../components/Button/Button';
 import Modal from '../components/Modal/Modal';
-import CardCreateForm from '../components/Card/CardCreateForm';
+import CreateCardModal from '../components/Modal/CreateCardModal';
 
 
 
@@ -49,6 +50,29 @@ const Play = () => {
   const [columns, setColumns] = useState({});
   const [cards, setCards] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editCardId, setEditCardId] = useState(null);
+  // Edit card handlers
+  const handleEditCard = (cardId) => setEditCardId(cardId);
+  const handleCloseEditModal = () => setEditCardId(null);
+  const handleSaveEditCard = (updatedCard) => {
+    setCards(prev => ({ ...prev, [updatedCard.id]: updatedCard }));
+    setEditCardId(null);
+  };
+  const handleDeleteCard = (cardId) => {
+    setCards(prev => {
+      const newCards = { ...prev };
+      delete newCards[cardId];
+      return newCards;
+    });
+    setColumns(prev => {
+      const newCols = { ...prev };
+      Object.values(newCols).forEach(col => {
+        col.cardIds = col.cardIds.filter(id => id !== cardId);
+      });
+      return newCols;
+    });
+    setEditCardId(null);
+  };
 
   // Load from IndexedDB on mount, or set defaults if empty
   useEffect(() => {
@@ -94,23 +118,26 @@ const Play = () => {
   }, [cards]);
 
   // Handler to create a new card
-  const handleCreateCard = ({ title, description, columnId }) => {
+  const handleCreateCard = ({ title, description, tag, priority }) => {
     // Generate a unique card id
     const newId = `card-${Date.now()}`;
     const newCard = {
       id: newId,
       title,
       description,
+      tag,
+      priority,
       value: 1,
     };
     setCards(prev => ({ ...prev, [newId]: newCard }));
     setColumns(prev => {
-      const col = prev[columnId];
+      const queuedCol = prev['Queued'] || prev['column-1'];
+      const queuedColId = queuedCol.id || 'Queued';
       return {
         ...prev,
-        [columnId]: {
-          ...col,
-          cardIds: [...col.cardIds, newId],
+        [queuedColId]: {
+          ...queuedCol,
+          cardIds: [...queuedCol.cardIds, newId],
         },
       };
     });
@@ -129,6 +156,7 @@ const Play = () => {
 
 
   // Precompute total cards for performance
+  // this section handles tag/indicator card count per column
   const totalCards = Object.values(columns).reduce((sum, col) => sum + col.cardIds.length, 0);
   // Helper for tag text
   const getColumnTagText = (colId, column) => {
@@ -158,10 +186,10 @@ const Play = () => {
             Queued column is full ({QUEUED_LIMIT} card limit).
           </div>
         ) : (
-          <CardCreateForm
-            onCreate={handleCreateCard}
-            onCancel={handleCloseModal}
-            columns={Object.values(columns)}
+          <CreateCardModal
+            open={isModalOpen}
+            onSave={handleCreateCard}
+            onClose={handleCloseModal}
           />
         )}
       </Modal>
@@ -185,20 +213,34 @@ const Play = () => {
             >
               {column.cardIds.map((cardId) => {
                 const card = cards[cardId];
-                return card ? (
+                if (!card) return null;
+                return (
                   <DragCard
                     key={card.id}
                     id={card.id}
                     title={card.title}
                     description={card.description}
+                    tag={card.tag}
+                    priority={card.priority}
                     value={card.value}
+                    onClick={() => handleEditCard(card.id)}
+                    onEdit={() => handleEditCard(card.id)}
+                    onDelete={() => handleDeleteCard(card.id)}
                   />
-                ) : null;
+                );
               })}
             </Column>
           );
         })}
       </Board>
+      {/* Edit Card Modal */}
+      <EditCardModal
+        open={!!editCardId}
+        card={editCardId ? cards[editCardId] : null}
+        onSave={handleSaveEditCard}
+        onDelete={handleDeleteCard}
+        onClose={handleCloseEditModal}
+      />
     </div>
   );
 };

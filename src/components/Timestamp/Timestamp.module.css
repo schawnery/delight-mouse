@@ -1,0 +1,9 @@
+.timestamp {
+  color: var(--color-grey-70, #666);
+  font-size: 0.5em;
+  letter-spacing: 0.01em;
+  line-height: 1.2rem;
+  vertical-align: middle;
+  width: 100%;
+  text-align: left;
+}

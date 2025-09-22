@@ -11,20 +11,25 @@ import styles from "./TextBox.module.css";
  *   rows: number (optional, default 3)
  *   ...rest: any other textarea props
  */
-function TextBox({ value, onChange, placeholder = "", rows = 3, ...rest }) {
+
+function TextBox({ label, value, onChange, placeholder = "", ...rest }) {
   return (
-    <textarea
-      className="text-box"
-      value={value}
-      onChange={onChange}
-      placeholder={placeholder}
-      rows={rows}
-      {...rest}
-    />
+    <div>
+      <label className={styles["textbox-label"]}>{label}</label>
+      <textarea
+        className={styles["text-box"]}
+        value={value}
+        onChange={onChange}
+        placeholder={placeholder}
+        {...rest}
+      />
+    </div>
   );
 }
 
+
 TextBox.propTypes = {
+  label: PropTypes.string,
   value: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
   placeholder: PropTypes.string,
