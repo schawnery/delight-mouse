@@ -1,0 +1,11 @@
+.counterRow {
+  display: flex;
+  flex-direction: row;
+  gap: 0.75rem;
+  width: 100%;
+}
+.counterCol {
+  flex: 1 1 auto;
+  display: flex;
+  justify-content: center;
+}

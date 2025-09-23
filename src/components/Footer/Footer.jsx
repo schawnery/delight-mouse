@@ -3,7 +3,7 @@ import React, { useMemo } from 'react';
 import './Footer.css';
 
 const MAJOR = 1;
-const MINOR = 2;
+const MINOR = 3;
 const ATOM = 2;
 
 const Footer = () => {

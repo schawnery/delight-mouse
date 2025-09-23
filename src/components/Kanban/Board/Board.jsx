@@ -7,7 +7,7 @@ function findColumnByCardId(columns, cardId) {
 	return Object.values(columns).find(col => col.cardIds.includes(cardId));
 }
 
-const Board = ({ children, columns, setColumns }) => {
+const Board = ({ children, columns, setColumns, onCardComplete }) => {
 	const handleDragEnd = (event) => {
 		const { active, over } = event;
 		if (!over || !active) return;
@@ -38,21 +38,25 @@ const Board = ({ children, columns, setColumns }) => {
 					[sourceCol.id]: { ...sourceCol, cardIds: newCardIds }
 				});
 			}
-		} else if (sourceCol && destCol && sourceCol.id !== destCol.id) {
-			// Move card to another column
-			const oldIdx = sourceCol.cardIds.indexOf(activeId);
-			if (oldIdx === -1) return;
-			const newIdx = overId && destCol.cardIds.indexOf(overId) !== -1 ? destCol.cardIds.indexOf(overId) : destCol.cardIds.length;
-			const newSourceCardIds = [...sourceCol.cardIds];
-			newSourceCardIds.splice(oldIdx, 1);
-			const newDestCardIds = [...destCol.cardIds];
-			newDestCardIds.splice(newIdx, 0, activeId);
-			setColumns({
-				...columns,
-				[sourceCol.id]: { ...sourceCol, cardIds: newSourceCardIds },
-				[destCol.id]: { ...destCol, cardIds: newDestCardIds }
-			});
-		}
+			} else if (sourceCol && destCol && sourceCol.id !== destCol.id) {
+				// Move card to another column
+				const oldIdx = sourceCol.cardIds.indexOf(activeId);
+				if (oldIdx === -1) return;
+				const newIdx = overId && destCol.cardIds.indexOf(overId) !== -1 ? destCol.cardIds.indexOf(overId) : destCol.cardIds.length;
+				const newSourceCardIds = [...sourceCol.cardIds];
+				newSourceCardIds.splice(oldIdx, 1);
+				const newDestCardIds = [...destCol.cardIds];
+				newDestCardIds.splice(newIdx, 0, activeId);
+				setColumns({
+					...columns,
+					[sourceCol.id]: { ...sourceCol, cardIds: newSourceCardIds },
+					[destCol.id]: { ...destCol, cardIds: newDestCardIds }
+				});
+				// If card moved to Completed, call onCardComplete
+				if (destCol.id === 'Completed' && typeof onCardComplete === 'function') {
+					onCardComplete(activeId);
+				}
+			}
 	};
 
 	return (
@@ -67,7 +71,8 @@ const Board = ({ children, columns, setColumns }) => {
 Board.propTypes = {
 	children: PropTypes.node,
 	columns: PropTypes.object.isRequired,
-	setColumns: PropTypes.func.isRequired
+	setColumns: PropTypes.func.isRequired,
+	onCardComplete: PropTypes.func
 };
 
 export default Board;

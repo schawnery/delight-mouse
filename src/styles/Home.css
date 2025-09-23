@@ -1,11 +1,10 @@
 /* Home.css */
 .home-container {
   text-align: center;
-  padding: 2rem;
-  max-width: calc(100vw - 4rem);
+  max-width: calc(100vw - 15rem);
   width: 100%;
   margin: 0 auto;
-  margin-top: 2rem;
+  margin-top: 8rem;
 }
 
 .large-container {

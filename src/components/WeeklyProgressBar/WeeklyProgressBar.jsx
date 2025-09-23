@@ -80,35 +80,7 @@ const WeeklyProgressBar = ({ score, lastPointsEarned }) => {
         Score multiplier decreases as the week progresses (Resets weekly on Sunday afternoons). Complete tasks early and chained together for maximum points!
       </div>
       
-      {typeof score === 'number' && (
-        <div className={styles['score-card']}>
-          <div className={styles['score-card-header']}>
-            <span className={styles['score-card-title']}>
-              <span role="img" aria-label="trophy" className={styles['score-card-trophy']}>🏆</span>
-              Score
-            </span>
-            {typeof score === 'number' && score > 0 && (
-              <span className={styles['score-card-rapid-bonus']}>
-                ⚡ Rapid Bonus!
-              </span>
-            )}
-          </div>
-          <div className={styles['score-card-value']}>{Math.floor(score)}</div>
-          <div className={styles['score-card-multiplier-row']}>
-            <div className={styles['score-card-multiplier-weekly']}>
-              {typeof multiplier === 'number' ? multiplier.toFixed(1) : '1.0'}x
-              <span className={styles['score-card-multiplier-label']}>Weekly</span>
-            </div>
-            <div className={styles['score-card-multiplier-rapid']}>
-              {typeof score === 'number' && score > 0 ? (score / multiplier).toFixed(1) : '1.0'}x
-              <span className={styles['score-card-multiplier-label']}>Rapid</span>
-            </div>
-          </div>
-          <div className={styles['score-card-desc']}>
-            Complete tasks rapidly for bonus multipliers!
-          </div>
-        </div>
-      )}
+      {/* ScoreCard removed; now rendered separately in Play.jsx */}
       
     </div>
   );

@@ -17,6 +17,7 @@ import { useKanbanBoard } from '../hooks/useKanbanBoard';
 import Button from '../components/Button/Button';
 import Modal from '../components/Modal/Modal';
 import CreateCardModal from '../components/Modal/CreateCardModal';
+import Counter from '../components/kanban/Counter/Counter';
 
 
 /**
@@ -56,6 +57,25 @@ const Play = () => {
     setCards(prev => ({ ...prev, [updatedCard.id]: updatedCard }));
     setEditCardId(null);
   };
+
+  // Mark card as completed: set completedAt and scoreAtCompletion
+  const handleCompleteCard = (cardId) => {
+    setCards(prev => {
+      const card = prev[cardId];
+      if (!card) return prev;
+      // Calculate score at completion (using current multipliers)
+      const completedAt = new Date().toISOString();
+      const scoreAtCompletion = (card.value || 1) * weeklyMultiplier * rapidMultiplier;
+      return {
+        ...prev,
+        [cardId]: {
+          ...card,
+          completedAt,
+          scoreAtCompletion,
+        },
+      };
+    });
+  };
   const handleDeleteCard = (cardId) => {
     setCards(prev => {
       const newCards = { ...prev };
@@ -92,7 +112,7 @@ const Play = () => {
         ...prev,
         [queuedColId]: {
           ...queuedCol,
-          cardIds: [...queuedCol.cardIds, newId],
+          cardIds: [newId, ...queuedCol.cardIds],
         },
       };
     });
@@ -106,7 +126,7 @@ const Play = () => {
   // this section handles tag/indicator card count per column
   const totalCards = Object.values(columns).reduce((sum, col) => sum + col.cardIds.length, 0);
 
-  // --- ScoreBox logic ---
+  // --- ScoreBox and Counter logic ---
   // Assume completed column is 'Completed' or fallback to 'column-3'
   const completedCol = columns['Completed'] || columns['column-3'] || { cardIds: [] };
   const completedCount = completedCol.cardIds.length;
@@ -123,6 +143,27 @@ const Play = () => {
       setLastPointsEarned(totalMultiplier);
     }
   }, [completedCount, totalMultiplier]);
+
+  // Build dailyCards and weeklyScores for Counter
+  const completedCards = Object.values(cards).filter(card => card.completedAt);
+  const dailyCards = completedCards.filter(card => {
+    const today = new Date();
+    const start = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 0, 0, 0, 0);
+    const end = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 23, 59, 59, 999);
+    const date = new Date(card.completedAt);
+    return date >= start && date <= end;
+  });
+  const weekStart = (() => {
+    const now = new Date();
+    const day = now.getDay();
+    return new Date(now.getFullYear(), now.getMonth(), now.getDate() - day, 0, 0, 0, 0);
+  })();
+  const weeklyScores = completedCards
+    .filter(card => new Date(card.completedAt) >= weekStart)
+    .map(card => ({
+      scoredAt: card.completedAt,
+      score: card.scoreAtCompletion || 0,
+    }));
   // Helper for tag text
   const getColumnTagText = (colId, column) => {
     if (colId === 'Completed') {
@@ -145,57 +186,70 @@ const Play = () => {
   }
   return (
     <div className="home-container">
-      <Button onClick={handleOpenModal} disabled={queuedLimitReached}>Create Card</Button>
-      <WeeklyProgressBar score={score} lastPointsEarned={lastPointsEarned} />
-      <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
-        {queuedLimitReached ? (
-          <div style={{ padding: 24, textAlign: 'center', color: 'red' }}>
-            Queued column is full ({QUEUED_LIMIT} card limit).
-          </div>
-        ) : (
-          <CreateCardModal
-            open={isModalOpen}
-            onSave={handleCreateCard}
-            onClose={handleCloseModal}
-          />
-        )}
-      </Modal>
-      <Board columns={columns} setColumns={setColumns}>
-        {['Queued', 'In Progress', 'Completed'].map((colId) => {
-          const column = columns[colId];
-          if (!column) return null;
-          const tagText = getColumnTagText(colId, column);
-          return (
-            <Column
-              key={column.id}
-              header={column.title}
-              tagText={tagText}
-              columnId={colId}
-              cardIds={column.cardIds}
-              wipLimitReached={colId === 'In Progress' && column.cardIds.length >= IN_PROGRESS_WIP}
-            >
-              {column.cardIds.map((cardId) => {
-                const card = cards[cardId];
-                if (!card) return null;
-                return (
-                  <DragCard
-                    key={card.id}
-                    id={card.id}
-                    title={card.title}
-                    description={card.description}
-                    tag={card.tag}
-                    priority={card.priority}
-                    value={card.value}
-                    onClick={() => handleEditCard(card.id)}
-                    onEdit={() => handleEditCard(card.id)}
-                    onDelete={() => handleDeleteCard(card.id)}
-                  />
-                );
-              })}
-            </Column>
-          );
-        })}
-      </Board>
+  <div style={{ display: 'flex', flexDirection: 'row', gap: '1rem', marginBottom: 24 }}>
+    <div style={{ flex: 2 }}>
+      <WeeklyProgressBar />
+    </div>
+    <div style={{ flex: 1 }}>
+      <Counter dailyCards={dailyCards} weeklyScores={weeklyScores} />
+    </div>
+  </div>
+    <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
+      {queuedLimitReached ? (
+        <div style={{ padding: 24, textAlign: 'center', color: 'red' }}>
+          Queued column is full ({QUEUED_LIMIT} card limit).
+        </div>
+      ) : (
+        <CreateCardModal
+          open={isModalOpen}
+          onSave={handleCreateCard}
+          onClose={handleCloseModal}
+        />
+      )}
+    </Modal>
+  <Board columns={columns} setColumns={setColumns} onCardComplete={handleCompleteCard}>
+      {['Queued', 'In Progress', 'Completed'].map((colId) => {
+        const column = columns[colId];
+        if (!column) return null;
+        const tagText = getColumnTagText(colId, column);
+        return (
+          <Column
+            key={column.id}
+            header={column.title}
+            tagText={tagText}
+            columnId={colId}
+            cardIds={column.cardIds}
+            wipLimitReached={colId === 'In Progress' && column.cardIds.length >= IN_PROGRESS_WIP}
+          >
+            {colId === 'Queued' && (
+              <div style={{ marginBottom: 12 }}>
+                <Button onClick={handleOpenModal} disabled={queuedLimitReached}>
+                  + Create Card
+                </Button>
+              </div>
+            )}
+            {column.cardIds.map((cardId) => {
+              const card = cards[cardId];
+              if (!card) return null;
+              return (
+                <DragCard
+                  key={card.id}
+                  id={card.id}
+                  title={card.title}
+                  description={card.description}
+                  tag={card.tag}
+                  priority={card.priority}
+                  value={card.value}
+                  onClick={() => handleEditCard(card.id)}
+                  onEdit={() => handleEditCard(card.id)}
+                  onDelete={() => handleDeleteCard(card.id)}
+                />
+              );
+            })}
+          </Column>
+        );
+      })}
+    </Board>
       {/* Edit Card Modal */}
       <EditCardModal
         open={!!editCardId}
@@ -204,7 +258,7 @@ const Play = () => {
         onDelete={handleDeleteCard}
         onClose={handleCloseEditModal}
       />
-    </div>
+  </div>
   );
 };
 
