@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { BsGraphDownArrow } from 'react-icons/bs';
 import { FaRegClock } from 'react-icons/fa';
 import styles from './WeeklyProgressBar.module.css';
+import ScoreBox from '../ScoreBox/ScoreBox';
 
 const MS_PER_HOUR = 3600000;
 const MS_PER_MIN = 60000;
@@ -37,7 +38,8 @@ function getWeekProgress() {
   };
 }
 
-const WeeklyProgressBar = () => {
+
+const WeeklyProgressBar = ({ score }) => {
   const [week, setWeek] = useState(getWeekProgress());
 
   useEffect(() => {
@@ -63,7 +65,7 @@ const WeeklyProgressBar = () => {
           <span className={styles['weekly-progress-title']}>Weekly Progress</span>
           <span className={styles['weekly-progress-percent']}>{percent}% complete</span>
         </div>
-  <div className={styles['weekly-progress-header-right']}>
+        <div className={styles['weekly-progress-header-right']}>
           <span className={styles['weekly-progress-multiplier']} style={{ color: multiplierColor }}>
             <BsGraphDownArrow style={{ fontSize: '16px', verticalAlign: 'middle' }} />
             <span>{multiplier.toFixed(1)}x</span>
@@ -74,9 +76,16 @@ const WeeklyProgressBar = () => {
       <div className={styles['weekly-progress-bar-bg']}>
         <div className={styles['weekly-progress-bar-fill']} style={{width: `${percent}%`}} />
       </div>
-  <div className={styles['weekly-progress-desc']}>
+      <div className={styles['weekly-progress-desc']}>
         Score multiplier decreases as the week progresses (Resets weekly on Sunday afternoons). Complete tasks early and chained together for maximum points!
       </div>
+      
+      {typeof score === 'number' && (
+        <div>
+          <ScoreBox score={score} />
+        </div>
+      )}
+      
     </div>
   );
 };

@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 
 // load components
 import WeeklyProgressBar from '../components/WeeklyProgressBar/WeeklyProgressBar';
-// import ScoreBox from '../components/ScoreBox/ScoreBox';
+import ScoreBox from '../components/ScoreBox/ScoreBox';
 import TextBox from '../components/TextBox/TextBox';
 import Column from '../components/Kanban/Column/Column';
 import Tag from '../components/Tag/Tag';
@@ -104,6 +104,16 @@ const Play = () => {
   // Precompute total cards for performance
   // this section handles tag/indicator card count per column
   const totalCards = Object.values(columns).reduce((sum, col) => sum + col.cardIds.length, 0);
+
+  // --- ScoreBox logic ---
+  // Assume completed column is 'Completed' or fallback to 'column-3'
+  const completedCol = columns['Completed'] || columns['column-3'] || { cardIds: [] };
+  const completedCount = completedCol.cardIds.length;
+  // Example: get multiplier (replace with real logic if needed)
+  const weeklyMultiplier = 1.7; // placeholder, replace with real value if available
+  const rapidMultiplier = 1.2; // placeholder, replace with real value if available
+  const totalMultiplier = weeklyMultiplier * rapidMultiplier;
+  const score = completedCount * totalMultiplier;
   // Helper for tag text
   const getColumnTagText = (colId, column) => {
     if (colId === 'Completed') {
@@ -127,7 +137,7 @@ const Play = () => {
   return (
     <div className="home-container">
       <Button onClick={handleOpenModal} disabled={queuedLimitReached}>Create Card</Button>
-      <WeeklyProgressBar />
+  <WeeklyProgressBar score={score} />
       <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
         {queuedLimitReached ? (
           <div style={{ padding: 24, textAlign: 'center', color: 'red' }}>

@@ -1,10 +1,5 @@
 .weekly-progress-card {
-  background: #fff;
-  border-radius: 12px;
-  border: 1px solid #e5e7eb;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
-  padding: 22px 28px 18px 28px;
-  margin: 16px 0;
+  margin: 2rem 0;
   font-family: inherit;
 }
 .weekly-progress-header {
