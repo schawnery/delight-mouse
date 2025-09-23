@@ -46,6 +46,7 @@ const defaultCards = {
 const Play = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editCardId, setEditCardId] = useState(null);
+  const [lastPointsEarned, setLastPointsEarned] = useState(0);
   const { columns, setColumns, cards, setCards, loading } = useKanbanBoard(defaultColumns, defaultCards);
 
   // Edit card handlers
@@ -114,6 +115,14 @@ const Play = () => {
   const rapidMultiplier = 1.2; // placeholder, replace with real value if available
   const totalMultiplier = weeklyMultiplier * rapidMultiplier;
   const score = completedCount * totalMultiplier;
+
+  // Track last points earned (simulate: 1 card = totalMultiplier points)
+  useEffect(() => {
+    // If completedCount increased, set lastPointsEarned
+    if (completedCount > 0) {
+      setLastPointsEarned(totalMultiplier);
+    }
+  }, [completedCount, totalMultiplier]);
   // Helper for tag text
   const getColumnTagText = (colId, column) => {
     if (colId === 'Completed') {
@@ -137,7 +146,7 @@ const Play = () => {
   return (
     <div className="home-container">
       <Button onClick={handleOpenModal} disabled={queuedLimitReached}>Create Card</Button>
-  <WeeklyProgressBar score={score} />
+      <WeeklyProgressBar score={score} lastPointsEarned={lastPointsEarned} />
       <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
         {queuedLimitReached ? (
           <div style={{ padding: 24, textAlign: 'center', color: 'red' }}>
