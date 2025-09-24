@@ -186,7 +186,7 @@ const Play = () => {
   }
   return (
     <div className="home-container">
-  <div style={{ display: 'flex', flexDirection: 'row', gap: '1rem', marginBottom: 24 }}>
+  <div style={{ display: 'flex', flexDirection: 'row', gap: '.75rem', marginBottom: 24 }}>
     <div style={{ flex: 2 }}>
       <WeeklyProgressBar />
     </div>
@@ -222,11 +222,9 @@ const Play = () => {
             wipLimitReached={colId === 'In Progress' && column.cardIds.length >= IN_PROGRESS_WIP}
           >
             {colId === 'Queued' && (
-              <div style={{ marginBottom: 12 }}>
-                <Button onClick={handleOpenModal} disabled={queuedLimitReached}>
-                  + Create Card
-                </Button>
-              </div>
+              <Button className="createCardButton" onClick={handleOpenModal} disabled={queuedLimitReached}>
+                + Create Card
+              </Button>
             )}
             {column.cardIds.map((cardId) => {
               const card = cards[cardId];

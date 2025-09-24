@@ -17,3 +17,24 @@
 .button:active {
   background: #3730a3;
 }
+
+
+/* -----------------------------------------------
+Custom styles for the Create Card button 
+ ----------------------------------------------- */
+.createCardButton {
+  background: #fff;
+  color: #4f1b92;
+  border: 1px dashed #4f1b92;
+  font-weight: 600;
+  width: 100%;
+  transition: background 0.2s, color 0.2s, border 0.2s;
+  padding: 2rem 1rem;
+  border-style: border-box;
+}
+.createCardButton:hover, .createCardButton:focus {
+  background: #f3e8ff;
+  color: #4f1b92;
+  border: 1px solid #4f1b92;
+  outline: none;
+}

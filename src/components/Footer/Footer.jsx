@@ -4,7 +4,7 @@ import './Footer.css';
 
 const MAJOR = 1;
 const MINOR = 3;
-const ATOM = 3;
+const ATOM = 8;
 
 const Footer = () => {
   const version = useMemo(() => {
