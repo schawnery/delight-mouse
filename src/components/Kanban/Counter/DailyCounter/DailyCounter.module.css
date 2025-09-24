@@ -9,9 +9,9 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  font-size: 0.8rem;
+  font-size: 1rem;
   color: #3b3b3b;
-  font-weight: 500;
+  font-weight: 400;
 }
 .boltIcon {
   color: #3b82f6;

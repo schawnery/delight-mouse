@@ -75,9 +75,6 @@ const WeeklyProgressBar = ({ score, lastPointsEarned }) => {
       <div className={styles['weekly-progress-bar-bg']}>
         <div className={styles['weekly-progress-bar-fill']} style={{width: `${percent}%`}} />
       </div>
-      <div className={styles['weekly-progress-desc']}>
-        Score multiplier decreases as the week progresses (Resets weekly on Sunday afternoons). Complete tasks early and chained together for maximum points!
-      </div>
       
       {/* ScoreCard removed; now rendered separately in Play.jsx */}
       
