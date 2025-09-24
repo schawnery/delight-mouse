@@ -36,7 +36,13 @@
 .drag-card-tags {
 	display: flex;
 	align-items: center;
-	gap: 10px;
+	width: 100%;
+	justify-content: space-between;
+}
+.drag-card-tagGroup {
+	display: flex;
+	width: 100%;
+	justify-content: space-between;
 }
 .drag-card-tag-input {
 	border: 1px solid #e5e7eb;

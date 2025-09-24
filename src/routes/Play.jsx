@@ -1,23 +1,23 @@
 //load constants and depdendencies
 import React, { useState, useEffect } from 'react';
+import { useKanbanBoard } from '../hooks/useKanbanBoard';
 // import { useNavigate } from 'react-router-dom';
 
 // load components
 import WeeklyProgressBar from '../components/WeeklyProgressBar/WeeklyProgressBar';
-import ScoreBox from '../components/ScoreBox/ScoreBox';
-import TextBox from '../components/TextBox/TextBox';
 import Column from '../components/Kanban/Column/Column';
-import Tag from '../components/Tag/Tag';
 import Board from '../components/Kanban/Board/Board';
-import '../styles/Home.css';
-
 import DragCard from '../components/Card/DragCard/DragCard';
 import EditCardModal from '../components/Modal/EditCardModal';
-import { useKanbanBoard } from '../hooks/useKanbanBoard';
 import Button from '../components/Button/Button';
 import Modal from '../components/Modal/Modal';
 import CreateCardModal from '../components/Modal/CreateCardModal';
 import Counter from '../components/kanban/Counter/Counter';
+
+// load global styles
+import '../styles/Home.css';
+
+
 
 
 /**

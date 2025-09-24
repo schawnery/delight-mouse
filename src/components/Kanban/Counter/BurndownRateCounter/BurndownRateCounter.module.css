@@ -1,0 +1,33 @@
+/* BurndownRateCounter.module.css */
+.burndownRateBox {
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+.burndownRateHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  color: #b45309;
+  font-weight: 500;
+}
+.fireIcon {
+  color: #f59e42;
+  font-size: 1.2em;
+}
+.infoIcon {
+  font-size: 0.95em;
+  color: #888;
+  margin-left: 2px;
+  cursor: help;
+}
+.burndownRateText {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #b45309;
+  margin-top: 2px;
+  text-align: center;
+}

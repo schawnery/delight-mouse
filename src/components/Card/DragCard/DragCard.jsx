@@ -59,7 +59,7 @@ const DragCard = ({ id, title, description, tag = '', value = 0, priority = '', 
         <p>{description}</p>
       </div>
       
-        <div style={{ marginTop: '0.5em', display: 'flex', gap: '0.5em', alignItems: 'center' }}>
+        <div className ={styles["drag-card-tagGroup"]}>
           {tag && <Tag text={tag} />}
           {priority !== '' && (
             <Tag text={`Priority: ${priority}`} />

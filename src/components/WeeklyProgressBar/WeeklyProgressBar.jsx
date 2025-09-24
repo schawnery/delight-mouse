@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { BsGraphDownArrow } from 'react-icons/bs';
 import { FaRegClock } from 'react-icons/fa';
 import styles from './WeeklyProgressBar.module.css';
-import ScoreBox from '../ScoreBox/ScoreBox';
 
 const MS_PER_HOUR = 3600000;
 const MS_PER_MIN = 60000;
