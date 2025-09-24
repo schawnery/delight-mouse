@@ -21,6 +21,7 @@ const WeeklyCounter = ({ scoredCards = [] }) => {
     .filter(card => card.scoredAt && new Date(card.scoredAt) >= weekStart)
     .reduce((sum, card) => sum + (card.score || 0), 0);
 
+  const displayTotal = weeklyTotal === 0 ? 0 : Math.round(weeklyTotal * 100) / 100;
   return (
     <div className={styles.weeklyCounterBox}>
       <div className={styles.weeklyCounterHeader}>
@@ -28,7 +29,7 @@ const WeeklyCounter = ({ scoredCards = [] }) => {
         This Week
       </div>
       <div className={styles.weeklyCounterText}>
-        <strong>{weeklyTotal === 0 ? "Let's start! " : weeklyTotal + ' Points'}</strong>
+        {weeklyTotal === 0 ? "Let's start! " : displayTotal + ' Points'}
         {weeklyTotal === 0 && <span role="img" aria-label="flex">💪</span>}
       </div>
     </div>

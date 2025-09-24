@@ -26,9 +26,9 @@ const DailyCounter = ({ completedCards = [] }) => {
       </div>
       <div className={styles.dailyCounterText}>
         {todayCount === 0 ? (
-          <><strong>Let's start!</strong> <span role="img" aria-label="flex">💪</span></>
+          <>Let's start! <span role="img" aria-label="flex">💪</span></>
         ) : (
-          <strong>{todayCount} Card{todayCount > 1 ? 's' : ''}</strong>
+          <>{todayCount} Card{todayCount > 1 ? 's' : ''}</>
         )}
       </div>
     </div>

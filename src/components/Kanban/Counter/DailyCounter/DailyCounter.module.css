@@ -1,23 +1,16 @@
 .dailyCounterBox {
-  background: #fafbfc;
-  border-radius: .5rem;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
-  padding: 18px 28px 18px 28px;
-  
-  border: 1px solid #dbdbdb;
   margin: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
+  gap: 0.5rem;
 }
 .dailyCounterHeader {
   display: flex;
   align-items: center;
-  gap: 6px;
-  font-size: 1.1rem;
+  gap: 0.5rem;
+  font-size: 0.8rem;
   color: #3b3b3b;
-  margin-bottom: 6px;
   font-weight: 500;
 }
 .boltIcon {
@@ -31,7 +24,7 @@
   cursor: help;
 }
 .dailyCounterText {
-  font-size: 1.3rem;
+  font-size: 1rem;
   font-weight: 600;
   color: #444;
   margin-top: 2px;
