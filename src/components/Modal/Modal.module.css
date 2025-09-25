@@ -42,3 +42,21 @@
   color: #000000;
   outline: none;
 }
+.actions {
+  display: flex;
+  width: 100%;
+  gap: 0.75rem;
+  justify-content: space-between;
+  align-items: center;
+}
+.actionGroup {
+  display: flex;
+  gap: 0.75rem; /* or whatever spacing you want */
+}
+.actions > *:first-child {
+  margin-right: auto;
+  flex: 0 0 auto;
+}
+.actions > *:not(:first-child) {
+  flex: 0 0 auto;
+}

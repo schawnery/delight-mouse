@@ -1,4 +1,9 @@
 :root {
+  /* Button secondary color tokens */
+  --button-secondary-green: var(--color-green-70, #108749);
+  --button-secondary-red: var(--color-red-60, #B91C1C);
+  --button-secondary-black: var(--color-grey-100, #1B1C22);
+  
   /* Greyscale */
   --color-grey-0:   #FFFFFF;
   --color-grey-5:   #F7F7F8;

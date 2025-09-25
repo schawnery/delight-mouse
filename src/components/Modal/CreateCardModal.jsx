@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Modal from './Modal';
 import styles from './Modal.module.css';
 import TextBox from '../TextBox/TextBox';
+import Button from '../Button/Button';
 
 export default function CreateCardModal({ open, card, onSave, onClose }) {
   const [title, setTitle] = React.useState(card?.title || '');
@@ -60,8 +61,8 @@ export default function CreateCardModal({ open, card, onSave, onClose }) {
           rows={1}
         />
         <div className={styles.actions}>
-          <button type="submit" className={styles.saveBtn}>Create</button>
-          <button type="button" className={styles.cancelBtn} onClick={onClose}>Cancel</button>
+          <Button type="button" className="secondaryButton secondaryButton--black" onClick={onClose}>Cancel</Button>
+          <Button type="submit" className="button">Create</Button>
         </div>
       </form>
     </Modal>

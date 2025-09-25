@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Modal from './Modal';
 import styles from './Modal.module.css';
 import TextBox from '../TextBox/TextBox';
+import Button from '../Button/Button';
 
 export default function EditCardModal({ open, card, onSave, onDelete, onClose }) {
   const [title, setTitle] = React.useState(card?.title || '');
@@ -47,9 +48,15 @@ export default function EditCardModal({ open, card, onSave, onDelete, onClose })
           rows={1}
         />
         <div className={styles.actions}>
-          <button type="submit" className={styles.saveBtn}>Save</button>
-          <button type="button" className={styles.deleteBtn} onClick={() => onDelete(card.id)}>Delete</button>
-          <button type="button" className={styles.cancelBtn} onClick={onClose}>Cancel</button>
+          <Button type="button" className="secondaryButton secondaryButton--red" onClick={() => onDelete(card.id)}>
+            Delete
+          </Button>
+          <div className={styles.actionGroup}>
+            <Button type="button" className="secondaryButton secondaryButton--black" onClick={onClose}>
+              Cancel
+            </Button>
+            <Button type="submit" className="button">Save</Button>
+          </div>
         </div>
       </form>
     </Modal>

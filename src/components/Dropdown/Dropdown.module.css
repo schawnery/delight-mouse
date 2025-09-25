@@ -1,0 +1,30 @@
+.dropdownWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  width: 100%;
+}
+.dropdownLabel {
+  font-size: 0.9rem;
+  color: #444;
+  font-weight: 500;
+  margin-bottom: 0.1em;
+}
+.dropdown {
+  padding: 0.5em 1em;
+  font-size: 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5em;
+  background: #fff;
+  color: #222;
+  transition: border-color 0.2s;
+  outline: none;
+}
+.dropdown:focus {
+  border-color: #6366f1;
+}
+.dropdown:disabled {
+  background: #f3f4f6;
+  color: #aaa;
+  cursor: not-allowed;
+}

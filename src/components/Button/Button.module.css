@@ -1,3 +1,16 @@
+
+
+/* Modifier classes for color variants */
+.secondaryButton--green {
+  --button-secondary-green: var(--color-green-70, #108749);
+}
+.secondaryButton--red {
+  --button-secondary-green: var(--color-red-60, #B91C1C);
+}
+.secondaryButton--black {
+  --button-secondary-green: var(--color-grey-100, #1B1C22);
+}
+
 .button {
   background: #161616;
   color: #e9e9e9;
@@ -18,6 +31,30 @@
   background: #3730a3;
 }
 
+.secondaryButton {
+  background: #fff;
+  color: var(--button-secondary-green);
+  border: 2px solid var(--button-secondary-green);
+  border-radius: 6px;
+  padding: 0.4rem 0.98rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border 0.2s;
+  box-shadow: none;
+  box-sizing: border-box;
+}
+.secondaryButton:hover, .secondaryButton:focus {
+  background: #ffffff;
+  color: var(--button-secondary-green);
+  border-color: var(--button-secondary-green);
+  outline: none;
+}
+.secondaryButton:active {
+  background: #ffffff;
+  color: var(--button-secondary-green);
+  border-color: var(--button-secondary-green);
+}
 
 /* -----------------------------------------------
 Custom styles for the Create Card button 
