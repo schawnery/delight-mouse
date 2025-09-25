@@ -9,7 +9,7 @@ const columnBg = {
 const tagBg = {
 	'Queued': '#ffd600',
 	'In Progress': '#00c853',
-	'Completed': '#6099fcff',
+	'Completed': '#6099fc',
 };
 
 const Header = ({ title, tagText, colId }) => (
@@ -19,7 +19,7 @@ const Header = ({ title, tagText, colId }) => (
 			background: columnBg[colId],
 		}}
 	>
-		<span className={styles.title} style={{ flex: 1 }}>{title}</span>
+		<span className={styles.title}>{title}</span>
 		{tagText && (
 			<span
 				className={styles.tag}

@@ -11,6 +11,7 @@ export default function EditCardModal({ open, card, onSave, onDelete, onClose })
   const [description, setDescription] = React.useState(card?.description || '');
   const [tag, setTag] = React.useState(card?.tag || '');
   const [priority, setPriority] = React.useState(card?.priority || '');
+  const formRef = React.useRef();
 
   React.useEffect(() => {
     setTitle(card?.title || '');
@@ -19,9 +20,26 @@ export default function EditCardModal({ open, card, onSave, onDelete, onClose })
     setPriority(card?.priority || '');
   }, [card]);
 
+  // Handle Ctrl+Enter to save
+  React.useEffect(() => {
+    const handler = (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+        if (formRef.current) {
+          formRef.current.requestSubmit();
+        }
+      }
+    };
+    if (open) {
+      window.addEventListener('keydown', handler);
+    }
+    return () => {
+      window.removeEventListener('keydown', handler);
+    };
+  }, [open]);
+
   return (
     <Modal isOpen={open} onClose={onClose}>
-      <form className={styles.form} onSubmit={e => { e.preventDefault(); onSave({ ...card, title, description, tag, priority }); }}>
+      <form ref={formRef} className={styles.form} onSubmit={e => { e.preventDefault(); onSave({ ...card, title, description, tag, priority }); }}>
         <h2>Edit the Card</h2>
         <TextBox
           label="Task name"

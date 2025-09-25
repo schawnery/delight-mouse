@@ -11,6 +11,7 @@ export default function CreateCardModal({ open, card, onSave, onClose }) {
   const [description, setDescription] = React.useState(card?.description || '');
   const [tag, setTag] = React.useState(card?.tag || '');
   const [priority, setPriority] = React.useState(card?.priority || '');
+  const formRef = React.useRef();
 
   React.useEffect(() => {
     setTitle(card?.title || '');
@@ -18,6 +19,23 @@ export default function CreateCardModal({ open, card, onSave, onClose }) {
     setTag(card?.tag || '');
     setPriority(card?.priority || '');
   }, [card]);
+
+  // Handle Ctrl+Enter to save
+  React.useEffect(() => {
+    const handler = (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+        if (formRef.current) {
+          formRef.current.requestSubmit();
+        }
+      }
+    };
+    if (open) {
+      window.addEventListener('keydown', handler);
+    }
+    return () => {
+      window.removeEventListener('keydown', handler);
+    };
+  }, [open]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -34,7 +52,7 @@ export default function CreateCardModal({ open, card, onSave, onClose }) {
 
   return (
     <Modal isOpen={open} onClose={onClose}>
-      <form className={styles.form} onSubmit={handleSubmit}>
+      <form ref={formRef} className={styles.form} onSubmit={handleSubmit}>
         <h2>Create a Card</h2>
         <TextBox
           label="Task name"

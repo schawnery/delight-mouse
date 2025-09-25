@@ -12,6 +12,7 @@
 	color: #333;
 	text-align: left;
 	align-items: center;
+	flex: 1;
 }
 .tag {
 	margin-left: 12px;
